@@ -1,0 +1,62 @@
+# to generate a new id:  python3 -c "from uuid import uuid4; print(uuid4())"
+tags_meta:
+  - id: ec60d156-eb79-41b0-a907-ccedf677da9a
+    tag: starch_flow
+    clear_name: Starch Flow
+    unit: cc/min
+    tolerance: 400
+  - id: 4206e334-b1ca-4639-8808-e83e3c3be395
+    tag: amina_flow
+    clear_name: Amina Flow
+    unit: cc/min
+    tolerance: 4
+  - id: 4011b8b6-c59b-4e0d-9779-21d8c190b04b
+    tag: ore_pulp_flow
+    clear_name: Ore Pulp Flow
+    unit: cc/min
+    tolerance: 5
+  - id: 371f1681-6cae-4dc0-abc2-5e8e6a6a116b
+    tag: ore_pulp_ph
+    clear_name: Ore Pulp pH
+    unit: ph
+    tolerance: 0.3
+  - id: b57d45f0-7c63-4c5b-8b34-266df9be2e26
+    tag: ore_pulp_density
+    clear_name: Ore Pulp Density
+    unit: density
+    tolerance: 0.1
+  - id: c92c2fa6-c564-4c9e-8da9-122254e04f4e
+    tag: total_air_flow
+    clear_name: Total air flow
+    unit: cc/min
+    tolerance: 100
+  - id: 0a7bdcea-9c87-44c5-a52f-ec64b7fce7eb
+    tag: total_column_level
+    clear_name: total column level
+    unit: cc/min
+    tolerance: 300
+
+targets_meta:
+  - id: 7d583622-e55e-49df-9978-6d2b4bcaa5c3
+    tag: silica_conc
+    name: Silica concentration
+    unit: "%"
+    aggregation: avg  # either avg or sum
+    objective: min  # either min or max
+
+plant_info:
+  - id: cf1f3202-3db8-46c5-babf-99981853911c
+    tag: iron_conc
+    clear_name: Iron Concentration
+    unit: "%"
+    section: states
+  - id: 2432fe1e-0c9a-4576-8b84-dd6e29ca83f0
+    tag: iron_feed
+    clear_name: Iron Feed
+    unit: cc/min
+    section: states
+  - id: 5eee8d00-194d-47fa-ab5a-a774f689957d
+    tag: silica_feed
+    clear_name: Silica Feed
+    unit: cc/min
+    section: states

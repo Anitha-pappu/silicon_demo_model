@@ -1,0 +1,81 @@
+# This section of catalog stores datasets which are raw inputs.
+
+input_data:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/sample_input_data.csv
+  metadata:
+    kedro-viz:
+      layer: raw
+
+tags_raw_config:
+  type: preprocessing.kedro_utils.TagsConfigCSVDataset
+  filepath: data/01_raw/sample_tags_raw_config.csv
+  load_args:
+    parameters_schema: raw
+    delimiter: ;
+
+tags_meta_config:
+  type: preprocessing.kedro_utils.TagsConfigCSVDataset
+  filepath: data/01_raw/sample_tags_meta_config.csv
+  load_args:
+    parameters_schema: meta
+    delimiter: ;
+  
+tags_outliers_config:
+  type: preprocessing.kedro_utils.TagsConfigCSVDataset
+  filepath: data/01_raw/sample_tags_outliers_config.csv
+  load_args:
+    parameters_schema: outliers
+    delimiter: ;
+  
+tags_impute_config:
+  type: preprocessing.kedro_utils.TagsConfigCSVDataset
+  filepath: data/01_raw/sample_tags_imputation_config.csv
+  load_args:
+    parameters_schema: impute
+    delimiter: ;
+
+tags_on_off_config:
+  type: preprocessing.kedro_utils.TagsConfigCSVDataset
+  filepath: data/01_raw/sample_tags_on_off_dependencies_config.csv
+  load_args:
+    parameters_schema: on_off
+    delimiter: ;
+  
+tags_resample_config:
+  type: preprocessing.kedro_utils.TagsConfigCSVDataset
+  filepath: data/01_raw/sample_tags_resample_config.csv
+  load_args:
+    parameters_schema: resample
+    delimiter: ;
+
+tag_config_summary:
+  type: pandas.CSVDataset
+  filepath: data/03_primary/tag_config_summary.csv
+  metadata:
+    kedro-viz:
+      layer: primary
+  versioned: true
+
+meta:
+  type: yaml.YAMLDataset
+  filepath: data/03_primary/meta_data.yml
+  metadata:
+    kedro-viz:
+      layer: primary
+
+old_cra_recommendations:
+  type: pandas.JSONDataset
+  filepath: data/07_model_output/sample_old_recommendations_cra.json
+
+old_cra_runs:
+  type: pandas.JSONDataset
+  filepath: data/07_model_output/sample_old_runs_cra.json
+
+old_cra_states:
+  type: pandas.JSONDataset
+  filepath: data/07_model_output/sample_old_states_cra.json
+
+model_input_data:
+  type: pandas.ParquetDataset
+  filepath: data/04_feature/sample_model_input_data.parquet

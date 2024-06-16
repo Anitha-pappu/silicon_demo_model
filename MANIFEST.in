@@ -1,0 +1,13 @@
+recursive-include conf *
+recursive-include data *
+recursive-include logs *
+recursive-include notebooks *
+recursive-include src *
+recursive-include docs *
+include .gitignore *
+include __main__.py *
+include pyproject.toml *
+include setup.cfg *
+include README.md *
+include index.rst *
+include MANIFEST.in *

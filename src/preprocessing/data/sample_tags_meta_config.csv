@@ -1,0 +1,25 @@
+tag_name;data_source;data_type;unit;min;max;extract_freq;tag_type
+iron_feed;Sys_A;numeric;%;45;65;5min;input
+silica_feed;Sys_A;numeric;%;2;30;5min;input
+starch_flow;Sys_A;numeric;cc/min;2000;6000;5min;input
+amina_flow;Sys_A;numeric;cc/min;300;700;5min;input
+ore_pulp_flow;Sys_A;numeric;cc/min;370;410;5min;input
+ore_pulp_ph;Sys_A;numeric;ph;9;11;5min;input
+ore_pulp_density;Sys_A;numeric;density;1.5;1.8;5min;input
+air_flow01;Sys_B;numeric;cc/min;200;300;5min;input
+air_flow02;Sys_B;numeric;cc/min;200;300;5min;input
+air_flow03;Sys_B;numeric;cc/min;200;300;5min;input
+air_flow04;Sys_B;numeric;cc/min;200;300;5min;input
+air_flow05;Sys_B;numeric;cc/min;200;300;5min;input
+air_flow06;Sys_B;numeric;cc/min;200;300;5min;input
+air_flow07;Sys_B;numeric;cc/min;200;300;5min;input
+column_level01;Sys_B;numeric;cc/min;200;800;5min;input
+column_level02;Sys_B;numeric;cc/min;200;800;5min;input
+column_level03;Sys_B;numeric;cc/min;200;800;5min;input
+column_level04;Sys_B;numeric;cc/min;200;800;5min;input
+column_level05;Sys_B;numeric;cc/min;200;800;5min;input
+column_level06;Sys_B;numeric;cc/min;200;800;5min;input
+column_level07;Sys_B;numeric;cc/min;200;800;5min;input
+iron_conc;Sys_A;numeric;%;62;78;5min;input
+silica_conc;Sys_A;numeric;%;1;4;5min;input
+amina_flow_sample_on_off;Sys_A;boolean;binary;0;1;5 min;on_off

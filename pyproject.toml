@@ -1,0 +1,141 @@
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 88
+
+[tool.pytest.ini_options]
+addopts = "--cov-report term-missing --cov src/set_point_optimization_kedro -ra"
+
+[tool.coverage.report]
+fail_under = 0
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+]
+
+[tool.kedro]
+package_name = "set_point_optimization_kedro"
+project_name = "set_point_optimization_kedro"
+kedro_init_version = "0.19.3"
+
+[tool.setuptools.packages.find]
+namespaces = true
+
+[project]
+requires-python = ">=3.8"
+dependencies = [
+    "pip",
+    "black>=23.9.1",
+    "click<8.1.0",
+    "flake8>=6.1.0",
+    "isort>=5.12.0,<6.0",
+    "pylint>=2.17.5",
+    "pytest>=7.4.2",
+    "pydantic>=2.0",
+    "numpy<1.24,>=1.21",
+    "pandas<2.0,>=1.5.3",
+    "plotly>=5.17.0",
+    "PyYAML>=6.0.1",
+    "numpy<1.24,>=1.21",
+    "pandas<2.0,>=1.5.3",
+    "statsmodels>=0.14.0",
+    "scikit-learn~=1.0",
+    "pydantic>=2.0",
+    "matplotlib",
+    "networkx",
+    "pydantic>=2.0",
+    "numpy<1.24,>=1.21",
+    "pandas<2.0,>=1.5.3",
+    "scikit-learn~=1.0",
+    "PyYAML>=6.0.1",
+    "markdown>=3.4.4",
+    "numpy<1.24,~=1.21",
+    "pandas<2.0,>=1.5.3",
+    "scikit-learn~=1.0",
+    "shap~=0.44.1",
+    "pygam",
+    "ipython>=8.13.0",
+    "keras-tuner>=1.4.4",
+    "protobuf>=4.23.3",
+    "tensorflow~=2.15.0",
+    "tensorboard~=2.15.0",
+    "dash-bootstrap-components>=1.5.0",
+    "dash-iconify>=0.1.2",
+    "jupyter_dash",
+    "aiohttp>=3.8.5",
+    "fsspec<=2023.1",
+    "gcsfs~=2023.1.0",
+    "kedro-datasets[pandas]>=0.19.0",
+    "kedro-datasets[tensorflow]>=0.19.0",
+    "kedro-datasets[pickle]>=0.19.0",
+    "s3fs>=2023.1.0",
+    "tensorflow~=2.15.0",
+    "tensorboard~=2.15.0",
+    "wheel",
+    "autopep8>=2.0.4",
+    "bs4>=0.0.1",
+    "black>=23.9.1",
+    "importlib_resources",
+    "ipython>=8.13.0",
+    "ipywidgets>=8.1.1",
+    "itables>=1.5.4",
+    "jinja2>=3.1.2",
+    "jsbeautifier>=1.14.9",
+    "kaleido~=0.2.0",
+    "markdown>=3.4.4",
+    "matplotlib>=3.8.0",
+    "nbformat>=5.9.2",
+    "pydantic>=2.0",
+    "numpy<1.24,>=1.21",
+    "pandas<2.0,>=1.5.3",
+    "plotly>=5.17.0",
+    "reportlab>=4.0.4",
+    "scikit-learn~=1.0",
+    "tqdm>=4.66.1",
+    "pycodestyle>=2.11.0",
+    "kedro>=0.19.0",
+    "matplotlib",
+    "numpy<1.24,>=1.21",
+    "pandas<2.0,>=1.5.3",
+    "scikit-learn~=1.0",
+    "scipy>=1.11.2",
+    "toposort>=1.10",
+    "typing_extensions>=4.10.0",
+    "jinja2>=3.1.2",
+    "matplotlib>=3.8.0",
+    "networkx>=3.1",
+    "pydantic>2.0",
+    "numpy<1.24,>=1.21",
+    "pandas<2.0,>=1.5.3",
+    "pytz>=2023.3.post1",
+    "PyYAML>=6.0.1",
+    "requests>=2.31.0",
+    "statsmodels>=0.14.0",
+    "scikit-learn~=1.0",
+    "toolz>=0.12.0",
+    "toposort>=1.10",
+    "scipy<1.13.0",
+    "kedro[pandas]>=0.19.0",
+    "ipython",
+    "jupyter~=1.0",
+    "kedro>=0.19.0",
+    "kedro-datasets>=2.0.0",
+    "wheel~=0.38.0",
+    "keras-tuner>=1.4.4",
+    "ipython",
+    "jupyter~=1.0",
+    "keras-tuner>=1.4.4",
+]
+name = "optimus.set_point_optimization_kedro_app"
+description = "A model predictive control use case where we provide optimal set points for control loops in a continuous processing plant."
+version = "0.21.0"
+
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"

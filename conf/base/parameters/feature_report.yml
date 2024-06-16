@@ -1,0 +1,32 @@
+# feature_report:
+#   title: 'Feature report sample data'
+#   datetime_column: timestamp
+#   target_column: silica_conc
+#   features:
+#     - iron_feed
+#     - iron_conc
+
+feature_report:
+  title: 'Feature report sample data'
+  datetime_column: timestamp
+  target_column: silicon
+  features:
+      - avg_uptake_press
+      # - c_2_hm
+      # - CAO_slag
+      - coke_thickness_belly
+      # - ETA_CO
+      # - HBT
+      - humidity
+      # - lower_k
+      # - m_value
+      - MGO_slag
+      # - middle_k
+      - PCI_KG_THM
+      - pellet_percent
+      # - production_rate
+      - sinter_percent
+      - SIO2_slag
+      - SLAG_VOL_KG_THM
+      - dry_cokerate_pro
+      
