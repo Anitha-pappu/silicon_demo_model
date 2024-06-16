@@ -1,0 +1,17 @@
+{
+  "code": "def generate_html_report(\n    report_structure: THtmlRenderableDict,\n    render_path: tp.Union[str, Path],\n    sections_description: tp.Optional[TSectionDescription] = None,\n    report_meta_data: TMetaData = None,\n    report_template_path: tp.Optional[str] = None,\n    report_template_assets_path: tp.Optional[str] = None,\n    max_table_of_content_depth: tp.Optional[int] = 3,\n    max_level_of_header: tp.Optional[int] = 3,\n) -> None:\n    \"\"\"Creates html report of plots and dumps it to the ``output_dir``.\n\n    Args:\n        report_structure: **ordered** figures to include in the html report\n        render_path: path to save the rendered html report\n        report_meta_data: metadata of the report, used for providing additional data\n            about the report; see ``ReportMetaData`` for format details\n        sections_description: maps section into its description;\n            key is a path to the section, value is a description.\n            See ``reporting.rendering.html.rendering.render_report`` for details.\n        report_template_path: path to the report template file\n            If None passed, then default template is loaded\n        report_template_assets_path: path to report template's assets if any are used\n        max_table_of_content_depth: max header level that to show in the table of\n            content; all shown if ``None``; enumeration starts from 1\n        max_level_of_header: all headers after this level will be hidden;\n            none hidden if ``None``; enumeration starts from 1\n    \"\"\"\n    render_path = Path(render_path)\n    render_path.parent.mkdir(parents=True, exist_ok=True)\n    if sections_description is not None:\n        warnings.warn(\n            \"``sections_description`` is deprecated. Include sections\"\n            \" descriptions in the ``report_structure`` keys\"\n            \" and align with ``SectionHeader`` protocol.\",\n            DeprecationWarning,\n        )\n    rendering = render_report(\n        report_structure,\n        sections_description,\n        max_table_of_content_depth,\n        max_level_of_header,\n    )\n\n    jinja_template = _load_jinja_template(\n        report_template_path, report_template_assets_path,\n    )\n\n    rendered_report = jinja_template.render(\n        render=rendering.rendering_content,\n        toc=rendering.table_of_content,\n        meta=ReportMetaData.from_input(report_meta_data),\n        plotly_js=get_plotlyjs(),  # todo: move to other resources in template\n    )\n\n    report_output_path = render_path.resolve().absolute()\n    logging.info(f\"Writing html report to {report_output_path}\")\n    render_path.write_text(rendered_report, encoding=DEFAULT_ENCODING)\n",
+  "filepath": "demo_model\\src\\reporting\\rendering\\html\\report_generation.py",
+  "parameters": {
+    "silicon_model.model_performance_report.render_path": "data/08_reporting/model_performance_report.html",
+    "silicon_model.model_performance_report.report_meta_data": {
+      "title": "Silicon Model Performance Report"
+    }
+  },
+  "run_command": "kedro run --to-nodes=silicon_model.generate_model_performance_report",
+  "inputs": [
+    "silicon_model.model_performance_report",
+    "params:silicon_model.model_performance_report.render_path",
+    "params:silicon_model.model_performance_report.report_meta_data"
+  ],
+  "outputs": []
+}

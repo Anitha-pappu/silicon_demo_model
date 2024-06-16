@@ -1,0 +1,16 @@
+{
+  "code": null,
+  "filepath": null,
+  "parameters": {
+    "silicon_model.train.target_column": "silicon"
+  },
+  "run_command": "kedro run --to-nodes=silicon_model.test_data_with_predictions",
+  "inputs": [
+    "test_data",
+    "trained_model",
+    "params:silicon_model.train.target_column"
+  ],
+  "outputs": [
+    "test_data_with_predictions"
+  ]
+}

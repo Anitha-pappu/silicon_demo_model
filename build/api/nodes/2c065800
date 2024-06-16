@@ -1,0 +1,20 @@
+{
+  "code": "def get_value_after_recs_counterfactual(  # noqa: WPS231\n    counterfactual_type: tp.Literal[\"predicted\", \"uplift\"],\n    solutions: Solutions,\n    data: tp.Optional[pd.DataFrame] = None,\n    datetime_column: str = \"timestamp\",\n    actual_value: tp.Optional[ActualValueMethod | str] = None,\n    actual_value_kwargs: tp.Optional[tp.Dict[str, tp.Any]] = None,\n) -> pd.DataFrame:\n    \"\"\"\n    Calculate the value after recommendations are implemented to perform counterfactual\n    analysis.\n\n    Counterfactual analysis compares the optimization objective with the baseline\n    value to get a sense of the impact before implementation. This function calculates\n    the optimization objective.\n\n    It can be calculated using two methods. The selection is made using the\n    ``counterfactual_type`` argument:\n        - 'predicted': It uses the objective used in optimization. Only the\n            ``solutions`` from the optimization process are required.\n        - 'uplift': It adds to the actual value the uplift in the optimization\n            objective. It requires the ``actual_value`` to be provided.\n    None of these methods is necessarily more accurate than the other. However, the\n    'uplift' method is believed to be more accurate in general, so it should be chosen\n    when ``actual_value`` is available.\n\n    Args:\n        counterfactual_type: Type of calculation used to calculate the value after\n            recommendations.\n\n            - 'predicted': Use the optimization objective\n            - 'uplift': Add to the actual value the uplift in the optimization objective\n        solutions: Solutions object obtained from the recommendations.\n        data: data to calculate the actual value from. Only required if the type is\n            'uplift'.\n        datetime_column: Name of the column in the data that contains the datetime.\n        actual_value: If it is a function, it must have ``ActualValueMethod`` signature.\n            If it is a string, it must be the name of the column in the ``data`` that\n            contains the actual value. Only required if the type is 'uplift'.\n        actual_value_kwargs: Arguments to pass to the actual value function.\n\n    Returns:\n        Dataframe with value after recommendations.\n\n    Raises:\n        ValueError: If the counterfactual type is not valid.\n        ValueError: If no ``actual_value`` or ``data`` are provided when the\n            ``counterfactual_type`` is set to 'uplift'.\n\n    \"\"\"\n    if counterfactual_type == \"predicted\":\n        return _get_value_after_recs_predicted(\n            solutions=solutions,\n            datetime_column=datetime_column,\n        )\n    elif counterfactual_type == \"uplift\":\n        if actual_value is None:\n            raise ValueError(\n                \"No actual_value is provided for counterfactual analysis using the \"\n                \"'uplift' method.\",\n            )\n        if data is None:\n            raise ValueError(\n                \"No data is provided for counterfactual analysis using the 'uplift' \"\n                \"method.\",\n            )\n        return _get_value_after_recs_uplift(\n            data=data,\n            solutions=solutions,\n            datetime_column=datetime_column,\n            actual_value=actual_value,\n            actual_value_kwargs=actual_value_kwargs,\n        )\n    raise ValueError(\n        f\"Unknown counterfactual type: {counterfactual_type}. \"\n        f\"Valid values are 'predicted' and 'uplift'.\",\n    )\n",
+  "filepath": "demo_model\\src\\recommend\\uplift\\value_after_recs.py",
+  "parameters": {
+    "impact.counterfactual_type": "uplift",
+    "impact.datetime_col": "timestamp",
+    "impact.target_col": "silicon"
+  },
+  "run_command": "kedro run --to-nodes=get_value_after_recs_opt",
+  "inputs": [
+    "params:impact.counterfactual_type",
+    "solutions",
+    "test_data",
+    "params:impact.datetime_col",
+    "params:impact.target_col"
+  ],
+  "outputs": [
+    "value_after_recs_opt"
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "type": "pandas.excel_dataset.ExcelDataset",
+  "filepath": "C:/Users/Anitha Pappu/OneDrive - McKinsey & Company/My_projects/optimus_set_point_optimization_kedro_app-0.21.0/data/08_reporting/baseline_cross_validation_scores.xlsx",
+  "run_command": "kedro run --to-outputs=baseline_cross_validation_scores",
+  "preview": {
+    "index": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "columns": [
+      "Unnamed: 0",
+      "mae",
+      "Unnamed: 2",
+      "mape",
+      "Unnamed: 4",
+      "mse",
+      "Unnamed: 6",
+      "r_squared",
+      "Unnamed: 8",
+      "rmse",
+      "Unnamed: 10",
+      "var_score",
+      "Unnamed: 12"
+    ],
+    "data": [
+      [
+        null,
+        "train",
+        "test",
+        "train",
+        "test",
+        "train",
+        "test",
+        "train",
+        "test",
+        "train",
+        "test",
+        "train",
+        "test"
+      ],
+      [
+        "Fold",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        0,
+        0.63,
+        0.69,
+        0.3,
+        0.3,
+        0.53,
+        0.73,
+        0.03,
+        -0.27,
+        0.73,
+        0.85,
+        0.03,
+        -0.17
+      ],
+      [
+        1,
+        0.63,
+        0.68,
+        0.3,
+        0.39,
+        0.56,
+        0.62,
+        0.01,
+        0.08,
+        0.75,
+        0.79,
+        0.01,
+        0.11
+      ],
+      [
+        2,
+        0.63,
+        0.57,
+        0.32,
+        0.33,
+        0.57,
+        0.49,
+        0.11,
+        -0.33,
+        0.75,
+        0.7,
+        0.11,
+        -0.25
+      ]
+    ]
+  },
+  "preview_type": "TablePreview",
+  "stats": null
+}

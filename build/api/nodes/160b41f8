@@ -1,0 +1,8 @@
+{
+  "parameters": {
+    "silica_model.split.split_parameters": {
+      "datetime_column": "timestamp",
+      "split_datetime": "2017-08-30 23:00:00"
+    }
+  }
+}

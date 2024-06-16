@@ -1,0 +1,10 @@
+{
+  "parameters": {
+    "silicon_model.cross_validate.cv_strategy_config": {
+      "class_name": "sklearn.model_selection.TimeSeriesSplit",
+      "kwargs": {
+        "n_splits": 4
+      }
+    }
+  }
+}

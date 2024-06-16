@@ -1,0 +1,16 @@
+{
+  "parameters": {
+    "feature_report.features": [
+      "avg_uptake_press",
+      "coke_thickness_belly",
+      "humidity",
+      "MGO_slag",
+      "PCI_KG_THM",
+      "pellet_percent",
+      "sinter_percent",
+      "SIO2_slag",
+      "SLAG_VOL_KG_THM",
+      "dry_cokerate_pro"
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "code": "def create_model_factory(\n    model_factory_type: tp.Union[str, tp.Type[TModelFactory]],\n    model_init_config: tp.Dict[str, tp.Any],\n    features: tp.List[str],\n    target: str,\n) -> TModelFactory:\n    \"\"\"\n    Create ``ModelFactoryBase`` instance from type and model initialization config.\n    This function is mostly needed for pipelining.\n\n    Each ``model_factory_type`` requires special structure\n    for ``model_init_config`` dict,\n    see corresponding Builders for more details.\n\n    Args:\n        model_factory_type: ``ModelFactoryBase`` type\n         that has ``.create`` method that created ModelBase instance.\n        model_init_config: Dict with parameters\n         required for ``ModelFactoryBase`` initialization.\n        features: List of features used in the model as ``features_in``\n        target: Column name to be used as a target in model\n\n    Returns:\n        Instance of a ``ModelBase`` inheritor class specified by ``model_type``\n    \"\"\"\n    if isinstance(model_factory_type, str):\n        model_factory: tp.Type[TModelFactory] = utils.load_obj(model_factory_type)\n    else:\n        model_factory = model_factory_type\n    return model_factory(model_init_config, features, target)\n",
+  "filepath": "demo_model\\src\\modeling\\models\\functional\\create_model.py",
+  "parameters": {
+    "silicon_model.train.factory_class_name": "modeling.SklearnPipelineFactory",
+    "silicon_model.train.init": {
+      "estimator": {
+        "class_name": "sklearn.linear_model.SGDRegressor",
+        "kwargs": {
+          "random_state": 123,
+          "penalty": "elasticnet"
+        }
+      },
+      "transformers": [
+        {
+          "class_name": "sklearn.preprocessing.StandardScaler",
+          "kwargs": {},
+          "name": "standard_scaler",
+          "wrapper": "preserve_columns"
+        }
+      ]
+    },
+    "silicon_model.train.model_features": [
+      "al2o3_slag",
+      "avg_uptake_press",
+      "c_2_hm",
+      "CAO_slag",
+      "coke_thickness_belly",
+      "ETA_CO",
+      "HBT",
+      "humidity",
+      "m_value",
+      "MGO_slag",
+      "total_k",
+      "PCI_KG_THM",
+      "pellet_percent",
+      "production_rate",
+      "sinter_percent",
+      "SIO2_slag",
+      "SLAG_VOL_KG_THM",
+      "dry_cokerate_pro"
+    ],
+    "silicon_model.train.target_column": "silicon"
+  },
+  "run_command": null,
+  "inputs": [
+    "params:silicon_model.train.factory_class_name",
+    "params:silicon_model.train.init",
+    "params:silicon_model.train.model_features",
+    "params:silicon_model.train.target_column"
+  ],
+  "outputs": [
+    "silicon_model.model_factory"
+  ]
+}

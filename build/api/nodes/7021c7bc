@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "impact.baseline_col": "model_prediction"
+  }
+}

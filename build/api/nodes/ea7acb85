@@ -1,0 +1,13 @@
+{
+  "code": "def calculate_shap_feature_importance(\n    data: pd.DataFrame,\n    shap_producer: ProducesShapFeatureImportance,\n    **kwargs: tp.Any,\n) -> pd.DataFrame:\n    \"\"\"Extract SHAP feature importances from ``ProducesShapFeatureImportance`` instance\n\n        Args:\n            data: data to be passed into\n             ``ProducesShapFeatureImportance.get_shap_feature_importance``.\n            shap_producer: an instance of ``ProducesShapFeatureImportance``\n            kwargs: kwargs to be passed into ``get_shap_feature_importance``\n\n        Returns:\n            DataFrame of SHAP feature importance with feature names as the index.\n        \"\"\"\n    shap_feature_importance = shap_producer.get_shap_feature_importance(data, **kwargs)\n    return (\n        pd.DataFrame(\n            data={FEATURE_IMPORTANCE_COLUMN_NAME: shap_feature_importance.values()},\n            index=pd.Index(shap_feature_importance.keys(), name=FEATURES_INDEX_NAME),\n        )\n        .sort_values(by=FEATURE_IMPORTANCE_COLUMN_NAME, ascending=False)\n    )\n",
+  "filepath": "demo_model\\src\\modeling\\models\\functional\\calculate_shap_values.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes=silicon_model.shap_feature_importance",
+  "inputs": [
+    "train_data",
+    "trained_model"
+  ],
+  "outputs": [
+    "shap_feature_importance"
+  ]
+}

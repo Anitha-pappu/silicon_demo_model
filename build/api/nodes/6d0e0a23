@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "impact.counterfactual_type": "uplift"
+  }
+}

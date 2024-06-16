@@ -1,0 +1,12 @@
+{
+  "code": "                lambda dict_: dict_[\"tags_meta\"],\n",
+  "filepath": "demo_model\\src\\set_point_optimization_kedro\\pipelines\\cra_export.py",
+  "parameters": {},
+  "run_command": null,
+  "inputs": [
+    "meta"
+  ],
+  "outputs": [
+    "tag_meta_config"
+  ]
+}

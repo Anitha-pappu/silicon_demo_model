@@ -1,0 +1,12 @@
+{
+  "code": "def deduplicate_pandas(\n    data: pd.DataFrame,\n    **kwargs: tp.Any,\n) -> pd.DataFrame:\n    \"\"\"Drop duplicates for pandas dataframe\n\n    Args:\n       data: input data\n       **kwargs: keywords feeding into the pandas `drop_duplicates`\n\n    Returns:\n       data with duplicates removed\n    \"\"\"\n    logger.info(f\"Dataframe shape before dedup: {data.shape}\")\n\n    sub = data.drop_duplicates(**kwargs)\n    sub.reset_index(inplace=True, drop=True)\n\n    logger.info(f\"Dataframe shape after dedup: {sub.shape}\")\n\n    n_dropped = data.shape[0] - sub.shape[0]\n    if n_dropped > 0:\n        quality_check_logger.info(f\"Dropped {n_dropped} duplicate timestamps\")\n    else:\n        quality_check_logger.info(\"No duplicate timestamps in data source.\")\n    return sub\n",
+  "filepath": "demo_model\\src\\preprocessing\\cleaning.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes=deduplicate_pandas",
+  "inputs": [
+    "post_round_timestamps"
+  ],
+  "outputs": [
+    "post_deduplicate_pandas"
+  ]
+}

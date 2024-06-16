@@ -1,0 +1,19 @@
+{
+  "code": "def calculate_model_prediction_bounds(\n    data: pd.DataFrame,\n    model: ModelBase,\n    model_metrics: tp.Dict[str, float],\n    error_metric: str = \"rmse\",\n    error_multiplier: float = 1.96,\n) -> pd.DataFrame:\n    \"\"\"Calculate the upper and lower bounds for the model prediction.\n\n    Args:\n        data: dataset for making predictions with model\n        model: trained instance of ``ModelBase``\n        model_metrics: calculated model performance metrics\n        error_metric: the metric to be used for calculating the bounds,\n         typically the standard deviation of the model metric on the\n         test set\n        error_multiplier: the multiplier to be used for error bounds,\n         typically 1.96 for a 95% confidence interval\n\n    Returns:\n        DataFrame with columns for actual, predicted and upper and lower bounds.\n        The lower and upper bounds are calculated using the error_multiplier and\n        the error_metric, representing the approximate confidence interval for\n        the model predictions.\n    \"\"\"\n\n    table = pd.DataFrame(\n        columns=[\"timestamp\", \"actuals\", \"predictions\", \"lower_bound\", \"upper_bound\"],\n    )\n\n    model_error = model_metrics[error_metric]\n    table[\"timestamp\"] = data[\"timestamp\"]\n    table[\"actuals\"] = data[model.target]\n    table[\"predictions\"] = model.predict(data)\n    table[\"lower_bound\"] = table[\"predictions\"] - error_multiplier * model_error\n    table[\"upper_bound\"] = table[\"predictions\"] + error_multiplier * model_error\n\n    return table\n",
+  "filepath": "demo_model\\src\\modeling\\models\\functional\\calculate_model_predictions.py",
+  "parameters": {
+    "model_monitoring.error_metric": "rmse",
+    "model_monitoring.error_multiplier": 1.96
+  },
+  "run_command": "kedro run --to-nodes=create_model_performance_tracking_metrics",
+  "inputs": [
+    "test_data",
+    "trained_model",
+    "test_metrics",
+    "params:model_monitoring.error_metric",
+    "params:model_monitoring.error_multiplier"
+  ],
+  "outputs": [
+    "model_prediction_bounds"
+  ]
+}

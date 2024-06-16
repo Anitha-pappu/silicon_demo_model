@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "silicon_model.model_performance_report.render_path": "data/08_reporting/model_performance_report.html"
+  }
+}

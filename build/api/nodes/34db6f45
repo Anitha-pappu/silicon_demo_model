@@ -1,0 +1,13 @@
+{
+  "code": "def prepare_tags(\n    tag_meta: MetaDataConfig[TagMetaData],\n    plant_status: MetaDataConfig[PlantStatusData],\n) -> TJson:\n    \"\"\"\n    Creates a list of tags in the format of ``tags`` endpoint of cra_api.\n\n    Args:\n        tag_meta: controlled parameters meta information.\n        plant_status: plant status information.\n\n    Returns:\n        An input to 'tags' endpoint of cra_api.\n    \"\"\"\n    export_tags = []\n    single_tag: TSingleDict\n    for metadata_tag in tag_meta:\n        single_tag = {\n            \"id\": metadata_tag.id,\n            \"clear_name\": metadata_tag.clear_name,\n            \"unit\": metadata_tag.unit,\n            \"area\": metadata_tag.area,\n            \"precision\": metadata_tag.precision,\n            \"priority\": metadata_tag.priority,\n        }\n        export_tags.append(single_tag)\n    for metadata_plant in plant_status:\n        single_tag = {\n            \"id\": metadata_plant.id,\n            \"clear_name\": metadata_plant.clear_name,\n            \"unit\": metadata_plant.unit,\n            \"area\": metadata_plant.area,\n            \"precision\": metadata_plant.precision,\n        }\n        export_tags.append(single_tag)\n\n    return tp.cast(TJson, export_tags)\n",
+  "filepath": "demo_model\\src\\recommend\\cra_export\\cra_export.py",
+  "parameters": {},
+  "run_command": null,
+  "inputs": [
+    "tags_meta",
+    "plant_status"
+  ],
+  "outputs": [
+    "cra_tags"
+  ]
+}

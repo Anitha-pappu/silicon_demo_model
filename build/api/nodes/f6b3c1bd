@@ -1,0 +1,9 @@
+{
+  "parameters": {
+    "live_monitoring.tags_to_monitor": [
+      "iron_feed",
+      "silica_feed",
+      "ore_pulp_ph"
+    ]
+  }
+}

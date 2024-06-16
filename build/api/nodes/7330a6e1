@@ -1,0 +1,19 @@
+{
+  "code": "def interpolate_cols(\n    data: pd.DataFrame,\n    impute_config: TagsConfig[TagImputationParameters],\n    **kwargs: tp.Any,\n) -> tp.Tuple[pd.DataFrame, pd.DataFrame]:\n    \"\"\"\n    Used to interpolate data on columns specified in method_df DataFrame.\n\n    Args:\n        data: input data\n        impute_config: DataFrame with columns 'tag_name' and 'imputation_rule'\n                   which specifies the interpolation method for each tag (column name)\n        **kwargs: kwargs used for pandas.Series.interpolate\n\n    Returns:\n        dataframe with interpolated data and a dataframe with interpolation info\n    \"\"\"\n\n    interpolated_data = data.copy()\n    missing_data_info = []\n\n    for tag_name in impute_config.keys():\n        imputation_rule = impute_config[tag_name].imputation_rule\n\n        if tag_name not in interpolated_data.columns:\n            raise ValueError(f\"Tag '{tag_name}' not found in dataframe columns.\")\n\n        # Count missing data before interpolation\n        missing_count = interpolated_data[tag_name].isna().sum()\n        missing_percentage = (missing_count / len(interpolated_data[tag_name])) * 100\n\n        missing_data_info.append({\n            'tag_name': tag_name,\n            'imputation_rule': imputation_rule,\n            'missing_count': missing_count,\n            'missing_percentage': missing_percentage,\n        })\n\n        # Perform the interpolation based on the specified method for this tag\n        interpolated_data[tag_name] = interpolated_data[tag_name].interpolate(\n            method=imputation_rule,\n            **kwargs,\n        )\n        logger.info(\n            f\"Interpolating '{tag_name}' column using \"\n            f\"'{imputation_rule}' method.\",\n        )\n\n    return interpolated_data, pd.DataFrame(missing_data_info)\n",
+  "filepath": "demo_model\\src\\preprocessing\\imputing.py",
+  "parameters": {
+    "cleaning.interpolate_kwargs": {
+      "limit": 5
+    }
+  },
+  "run_command": "kedro run --to-nodes=interpolate_cols",
+  "inputs": [
+    "post_remove_outlier",
+    "tags_impute_config",
+    "params:cleaning.interpolate_kwargs"
+  ],
+  "outputs": [
+    "post_interpolate_cols",
+    "interpolate_summary"
+  ]
+}

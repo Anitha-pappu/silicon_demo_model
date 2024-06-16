@@ -1,0 +1,21 @@
+{
+  "parameters": {
+    "baseline_model.train.init": {
+      "estimator": {
+        "class_name": "sklearn.linear_model.Ridge",
+        "kwargs": {
+          "random_state": 123,
+          "max_iter": 1000
+        }
+      },
+      "transformers": [
+        {
+          "class_name": "sklearn.preprocessing.StandardScaler",
+          "kwargs": {},
+          "name": "standard_scaler",
+          "wrapper": "preserve_columns"
+        }
+      ]
+    }
+  }
+}

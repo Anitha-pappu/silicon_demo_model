@@ -1,0 +1,46 @@
+{
+  "type": "pandas.csv_dataset.CSVDataset",
+  "filepath": "C:/Users/Anitha Pappu/Box Sync/Anitha Space/Anitha_Work/7. LOP/SAIL Client/demo_model/data/08_reporting/outlier_summary.csv",
+  "run_command": "kedro run --to-outputs=outlier_summary",
+  "preview": {
+    "index": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "columns": [
+      "tag_name",
+      "outlier_percentage"
+    ],
+    "data": [
+      [
+        "upper_k",
+        1.16
+      ],
+      [
+        "al2o3_slag",
+        0.5
+      ],
+      [
+        "avg_uptake_press",
+        1.83
+      ],
+      [
+        "CAO_slag",
+        0.5
+      ],
+      [
+        "coke_thickness_belly",
+        99.0
+      ]
+    ]
+  },
+  "preview_type": "TablePreview",
+  "stats": {
+    "rows": 16,
+    "columns": 2,
+    "file_size": 295
+  }
+}

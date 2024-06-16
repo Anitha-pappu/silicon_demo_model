@@ -1,0 +1,21 @@
+{
+  "parameters": {
+    "silica_model.train.init": {
+      "estimator": {
+        "class_name": "sklearn.linear_model.SGDRegressor",
+        "kwargs": {
+          "random_state": 123,
+          "penalty": "elasticnet"
+        }
+      },
+      "transformers": [
+        {
+          "class_name": "sklearn.preprocessing.StandardScaler",
+          "kwargs": {},
+          "name": "standard_scaler",
+          "wrapper": "preserve_columns"
+        }
+      ]
+    }
+  }
+}

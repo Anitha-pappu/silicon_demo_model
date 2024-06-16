@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "baseline_model.train.target_column": "silica_conc"
+  }
+}

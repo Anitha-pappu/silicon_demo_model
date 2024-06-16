@@ -1,0 +1,13 @@
+{
+  "code": "def rename_tags(\n    tags_raw_config: TagsConfig[TagRawParameters],\n    data_to_rename: pd.DataFrame,\n) -> pd.DataFrame:\n    \"\"\"\n    Renames tags in data_to_rename according to the mapping in rename_config.\n\n    Args:\n        tags_raw_config: A TagsConfig object with RawTagParameters models containing\n                       'raw_tag' and 'tag_name' attributes.\n        data_to_rename: A DataFrame with columns to be renamed based on\n                        rename_config mapping.\n\n    Returns:\n        A DataFrame with columns replaced according to 'tag_name' mapping.\n    \"\"\"\n\n    rename_df = tags_raw_config.to_df()\n    rename_dict = rename_df.set_index('raw_tag')['tag_name'].to_dict()\n\n    missing_columns = set(data_to_rename.columns) - set(rename_dict.keys())\n    if missing_columns:\n        logger.warning(\n            f\"Some columns are not in the rename map \"\n            f\"and will not be renamed: {missing_columns}\",\n        )\n\n    return data_to_rename.rename(columns=rename_dict)\n",
+  "filepath": "demo_model\\src\\preprocessing\\utils.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes=rename_tags",
+  "inputs": [
+    "tags_raw_config",
+    "input_data"
+  ],
+  "outputs": [
+    "renamed_input_data"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "parameters": {
+    "baseline_model.train.model_features": [
+      "iron_feed",
+      "silica_feed",
+      "feed_diff_divide_silica"
+    ]
+  }
+}

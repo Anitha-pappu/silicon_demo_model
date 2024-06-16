@@ -1,0 +1,43 @@
+{
+  "code": "def create_detectors_dict(\n    anomaly_parameters: dict[str, dict[str, str]],\n    tags_to_monitor: tp.List[str],\n) -> dict[str, list[AnomalyDetector]]:\n    \"\"\"\n    Create a dictionary of anomaly detectors for each variable.\n    The detectors are defined in the anomaly_parameters dictionary.\n    Users can modify this function and the anomaly_parameters\n    to allow different detectors for each variable.\n    Args:\n        anomaly_parameters: A dictionary that specifies what detectors to use and\n            their parameters.\n            >>> anomaly_parameters = {\n            >>>     \"preprocessing.MissingValuesDetector\": {   # detector name\n            >>>         \"time_window\": \"3H\",  # time window for detecting anomalies\n            >>>         \"threshold\": 0.5,  # threshold for detecting anomalies\n            >>>     },\n            >>>     \"preprocessing.RangeDetector\": {  # detector name\n            >>>         \"time_window\": \"3H\",  # time window for detecting anomalies\n            >>>         \"threshold\": 0.5,  # threshold for detecting anomalies\n            >>>         \"tag_range\": {  # range for detecting anomalies\n            >>>             \"iron_feed\": [30, 70],  # range for iron_feed\n            >>>             \"silica_feed\": [0, 35],  # range for silica_feed\n            >>>             \"ore_pulp_ph\": [8.5, 12],  # range for ore_pulp_ph\n            >>>         },\n            >>>     },\n            >>> }\n        tags_to_monitor: A list of tags to monitor.\n    Returns:\n        A dictionary of anomaly detectors for each variable.\n    \"\"\"\n    # instantiate anomaly detectors\n    detectors = {}\n    for detector_name, detector_parameters in anomaly_parameters.items():\n        detectors[detector_name] = load_obj(detector_name)(**detector_parameters)\n\n    # create a dictionary of anomaly detectors for each variable\n    anomaly_detector_dict = {}\n    for monitor_variable in tags_to_monitor:\n        for detector in detectors.values():\n            if monitor_variable not in anomaly_detector_dict:\n                anomaly_detector_dict[monitor_variable] = [detector]\n            else:\n                anomaly_detector_dict[monitor_variable].append(detector)\n\n    return anomaly_detector_dict\n",
+  "filepath": "demo_model\\src\\preprocessing\\anomaly_detector.py",
+  "parameters": {
+    "live_monitoring.detectors": {
+      "preprocessing.MissingValuesDetector": {
+        "time_window": "3H",
+        "threshold": 0.5
+      },
+      "preprocessing.RangeDetector": {
+        "time_window": "3H",
+        "threshold": 0.5,
+        "tag_range": {
+          "iron_feed": [
+            30,
+            70
+          ],
+          "silica_feed": [
+            0,
+            35
+          ],
+          "ore_pulp_ph": [
+            8.5,
+            12
+          ]
+        }
+      }
+    },
+    "live_monitoring.tags_to_monitor": [
+      "iron_feed",
+      "silica_feed",
+      "ore_pulp_ph"
+    ]
+  },
+  "run_command": "kedro run --to-nodes=create_detectors",
+  "inputs": [
+    "params:live_monitoring.detectors",
+    "params:live_monitoring.tags_to_monitor"
+  ],
+  "outputs": [
+    "detectors"
+  ]
+}

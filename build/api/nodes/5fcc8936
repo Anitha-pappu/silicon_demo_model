@@ -1,0 +1,46 @@
+{
+  "code": "def create_tuner(\n    model_factory: ModelFactoryBase,\n    model_tuner_type: tp.Union[str, tp.Type[TModelTuner]],\n    tuner_config: tp.Dict[str, tp.Any],\n) -> TModelTuner:\n    \"\"\"\n    Create model tuner instance\n\n    Args:\n        model_factory: Instance of ``ModelFactoryBase``\n         produces Model with corresponding type\n        model_tuner_type: class name of inheritor of\n         ``ModelTunerBase`` to be initialized\n        tuner_config: a dict for hyperparameters\n         tuning config aligned with provided model\n\n    Returns:\n        ``TunerBase`` instance\n    \"\"\"\n    if isinstance(model_tuner_type, str):\n        model_tuner: tp.Type[TModelTuner] = utils.load_obj(model_tuner_type)\n    else:\n        model_tuner = model_tuner_type\n    return model_tuner(model_factory, tuner_config)\n",
+  "filepath": "demo_model\\src\\modeling\\models\\functional\\tune_model.py",
+  "parameters": {
+    "silicon_model.tune.class_name": "modeling.SklearnPipelineTuner",
+    "silicon_model.tune.tuner": {
+      "class_name": "sklearn.model_selection.GridSearchCV",
+      "kwargs": {
+        "n_jobs": -1,
+        "refit": "mae",
+        "param_grid": {
+          "estimator__alpha": [
+            0.0001,
+            0.001,
+            0.01,
+            0.1,
+            1,
+            10
+          ],
+          "estimator__l1_ratio": [
+            0.00001,
+            0.0001,
+            0.001,
+            0.01,
+            0.1,
+            1
+          ]
+        },
+        "scoring": {
+          "mae": "neg_mean_absolute_error",
+          "rmse": "neg_root_mean_squared_error",
+          "r2": "r2"
+        }
+      }
+    }
+  },
+  "run_command": null,
+  "inputs": [
+    "silicon_model.model_factory",
+    "params:silicon_model.tune.class_name",
+    "params:silicon_model.tune.tuner"
+  ],
+  "outputs": [
+    "silicon_model.model_tuner"
+  ]
+}

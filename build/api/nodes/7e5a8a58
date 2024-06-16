@@ -1,0 +1,13 @@
+{
+  "code": "def detect_data_anomaly(\n    data: pd.DataFrame,\n    anomaly_detectors: tp.Dict[str, tp.List[AnomalyDetector]],\n    timestamp_col: tp.Optional[str] = None,\n) -> pd.Series:\n    \"\"\"Detect anomalies for given tags in the data.\n    Args:\n        data: The data to be checked for anomalies.\n        anomaly_detectors: The anomaly detector to be used. It should be a dictionary\n            where the keys are the names of the tags to be checked and the values are\n            the lists of anomaly detectors to be used for each tag.\n        timestamp_col: The name of the column with the timestamp if the data is not\n            indexed by timestamp.\n    Returns:\n        A dataframe with at least the following columns:\n         - \"name\": indicating the name of the tag/feature\n         - \"is_anomaly\": indicating whether each data point is an anomaly\n         - \"time_window\": indicating the window in which the anomaly was detected\n         - \"comments\": indicating any additional information about the anomaly\n    \"\"\"\n    df = _check_timestamp_col(data, timestamp_col)\n    anomalies = pd.DataFrame()\n    for tag, detectors in anomaly_detectors.items():\n        if tag not in data:\n            raise ValueError(f\"Tag {tag} not found in the data.\")\n        for detector in detectors:\n            tag_data = df[tag]\n            tag_anomalies = detector.detect(tag_data)\n            anomalies = pd.concat([anomalies, tag_anomalies], axis=0)\n\n    return anomalies.reset_index(drop=True)\n",
+  "filepath": "demo_model\\src\\preprocessing\\anomaly_detector.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes=create_data_anomaly_table",
+  "inputs": [
+    "live_monitoring_data",
+    "detectors"
+  ],
+  "outputs": [
+    "anomalies_table"
+  ]
+}

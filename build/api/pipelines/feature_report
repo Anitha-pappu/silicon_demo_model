@@ -1,0 +1,245 @@
+{
+  "nodes": [
+    {
+      "id": "dc2bb6f9",
+      "name": "model_input_data",
+      "tags": [
+        "feature_report",
+        "feature_factory",
+        "modeling",
+        "recent_live_data"
+      ],
+      "pipelines": [
+        "feature_report",
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "pandas.parquet_dataset.ParquetDataset",
+      "stats": {
+        "rows": 127,
+        "columns": 23,
+        "file_size": 36825
+      }
+    },
+    {
+      "id": "ed120d63",
+      "name": "plot_features",
+      "tags": [
+        "feature_report"
+      ],
+      "pipelines": [
+        "feature_report"
+      ],
+      "type": "task",
+      "modular_pipelines": [],
+      "parameters": {
+        "feature_report.features": [
+          "avg_uptake_press",
+          "coke_thickness_belly",
+          "humidity",
+          "MGO_slag",
+          "PCI_KG_THM",
+          "pellet_percent",
+          "sinter_percent",
+          "SIO2_slag",
+          "SLAG_VOL_KG_THM",
+          "dry_cokerate_pro"
+        ],
+        "feature_report.datetime_column": "timestamp",
+        "feature_report.target_column": "silicon",
+        "feature_report.title": "Feature report sample data"
+      }
+    },
+    {
+      "id": "e3b1e940",
+      "name": "params:feature_report.features",
+      "tags": [
+        "feature_report"
+      ],
+      "pipelines": [
+        "feature_report"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "feature_report"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "6cb1eab1",
+      "name": "params:feature_report.datetime_column",
+      "tags": [
+        "feature_report"
+      ],
+      "pipelines": [
+        "feature_report"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "feature_report"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "93287eba",
+      "name": "params:feature_report.target_column",
+      "tags": [
+        "feature_report"
+      ],
+      "pipelines": [
+        "feature_report"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "feature_report"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "83429c54",
+      "name": "params:feature_report.title",
+      "tags": [
+        "feature_report"
+      ],
+      "pipelines": [
+        "feature_report"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "feature_report"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "ce0be5a3",
+      "name": "feature_report",
+      "tags": [
+        "feature_report"
+      ],
+      "pipelines": [
+        "feature_report"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "html_dataset.html_dataset.HtmlReportDataset",
+      "stats": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "ed120d63",
+      "target": "ce0be5a3"
+    },
+    {
+      "source": "6cb1eab1",
+      "target": "ed120d63"
+    },
+    {
+      "source": "83429c54",
+      "target": "ed120d63"
+    },
+    {
+      "source": "dc2bb6f9",
+      "target": "ed120d63"
+    },
+    {
+      "source": "93287eba",
+      "target": "ed120d63"
+    },
+    {
+      "source": "e3b1e940",
+      "target": "ed120d63"
+    }
+  ],
+  "layers": [
+    "primary",
+    "raw"
+  ],
+  "tags": [
+    {
+      "id": "export",
+      "name": "export"
+    },
+    {
+      "id": "feature_factory",
+      "name": "feature_factory"
+    },
+    {
+      "id": "feature_report",
+      "name": "feature_report"
+    },
+    {
+      "id": "live_prediction",
+      "name": "live_prediction"
+    },
+    {
+      "id": "modeling",
+      "name": "modeling"
+    },
+    {
+      "id": "preprocessing",
+      "name": "preprocessing"
+    },
+    {
+      "id": "recent_live_data",
+      "name": "recent_live_data"
+    },
+    {
+      "id": "recommend",
+      "name": "recommend"
+    },
+    {
+      "id": "reporting",
+      "name": "reporting"
+    }
+  ],
+  "pipelines": [
+    {
+      "id": "__default__",
+      "name": "__default__"
+    },
+    {
+      "id": "live_inference",
+      "name": "live_inference"
+    },
+    {
+      "id": "feature_report",
+      "name": "feature_report"
+    }
+  ],
+  "modular_pipelines": {
+    "__root__": {
+      "id": "__root__",
+      "name": "__root__",
+      "inputs": [],
+      "outputs": [],
+      "children": [
+        {
+          "id": "ce0be5a3",
+          "type": "data"
+        },
+        {
+          "id": "dc2bb6f9",
+          "type": "data"
+        },
+        {
+          "id": "ed120d63",
+          "type": "task"
+        }
+      ]
+    }
+  },
+  "selected_pipeline": "feature_report"
+}

@@ -1,0 +1,12 @@
+{
+  "code": "                func=lambda data: data.iloc[[-1]],\n",
+  "filepath": "demo_model\\src\\set_point_optimization_kedro\\pipelines\\live_predictions.py",
+  "parameters": {},
+  "run_command": null,
+  "inputs": [
+    "model_input_data_filled"
+  ],
+  "outputs": [
+    "test_data"
+  ]
+}

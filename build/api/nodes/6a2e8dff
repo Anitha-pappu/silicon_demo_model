@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "impact.default_group": "other_group"
+  }
+}

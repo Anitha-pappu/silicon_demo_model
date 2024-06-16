@@ -1,0 +1,17 @@
+{
+  "code": "def prepare_runs(\n    solutions: Solutions,\n    iso_format: str = _DEFAULT_ISO_FORMAT,\n    timestamp_column: str = _DEFAULT_TIMESTAMP_COLUMN,\n) -> TJson:\n    \"\"\"Create a list of runs in the format of ``runs`` endpoint of cra_api.\n\n    Args:\n        solutions: optimization solutions.\n        iso_format: format for timestamp.\n        timestamp_column: column name for timestamp.\n\n    Returns:\n        An input to 'runs' endpoint of cra_api.\n    \"\"\"\n    runs = []\n    for solution in solutions.values():\n        # timestamp parsing\n        timestamp = solution.context_parameters[timestamp_column]\n        timestamp = parse_timestamp(iso_format, timestamp)\n        single_run: TSingleDict\n        if solution.is_successful_optimization:\n            single_run = {\"id\": solution.run_id, \"timestamp\": timestamp}\n        else:\n            single_run = {\n                \"id\": solution.run_id,\n                \"error_message\": \"Optimization did not improve current set points\",\n                \"timestamp\": timestamp,\n            }\n        runs.append(single_run)\n    return runs\n",
+  "filepath": "demo_model\\src\\recommend\\cra_export\\cra_export.py",
+  "parameters": {
+    "recommend.cra_export.timestamp_format": "%Y-%m-%d %H:%M:%S",
+    "recommend.cra_export.timestamp_column": "timestamp"
+  },
+  "run_command": null,
+  "inputs": [
+    "solutions",
+    "params:recommend.cra_export.timestamp_format",
+    "params:recommend.cra_export.timestamp_column"
+  ],
+  "outputs": [
+    "cra_runs"
+  ]
+}

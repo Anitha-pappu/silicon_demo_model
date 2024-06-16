@@ -1,0 +1,12 @@
+{
+  "code": "def prepare_targets(target_meta: MetaDataConfig[TargetMetaData]) -> TJson:\n    \"\"\"\n    Creates a list of tags in the format of ``targets`` endpoint of cra_api.\n\n    Args:\n        target_meta: target meta information.\n\n    Returns:\n        An input to 'targets' endpoint of cra_api.\n    \"\"\"\n    export_targets = []\n    for metadata in target_meta:\n        single_target: TSingleDict = {\n            \"id\": metadata.id,\n            \"name\": metadata.name,\n            \"unit\": metadata.unit,\n            \"aggregation\": metadata.aggregation,\n            \"objective\": metadata.objective,\n            \"precision\": metadata.precision,\n        }\n        export_targets.append(single_target)\n    return tp.cast(TJson, export_targets)\n",
+  "filepath": "demo_model\\src\\recommend\\cra_export\\cra_export.py",
+  "parameters": {},
+  "run_command": null,
+  "inputs": [
+    "target_meta"
+  ],
+  "outputs": [
+    "cra_targets"
+  ]
+}

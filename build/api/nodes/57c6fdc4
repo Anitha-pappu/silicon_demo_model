@@ -1,0 +1,12 @@
+{
+  "code": "def create_model(model_factory: TModelFactory) -> ModelBase:\n    \"\"\"\n    Create model from the ``ModelFactoryBase``'s ``.create()`` method.\n    This function is mostly needed for pipelining.\n    Args:\n        model_factory: Instance of ``ModelFactoryBase``\n\n    Returns:\n        Instance of ``ModelBase`` produced by ``ModelFactoryBase``\n    \"\"\"\n    return model_factory.create()\n",
+  "filepath": "optimus_set_point_optimization_kedro_app-0.21.0\\src\\modeling\\models\\functional\\create_model.py",
+  "parameters": {},
+  "run_command": null,
+  "inputs": [
+    "baseline_model.model_factory"
+  ],
+  "outputs": [
+    "baseline_model.model"
+  ]
+}

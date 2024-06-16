@@ -1,0 +1,20 @@
+{
+  "code": "def prepare_actuals(\n    actual_values_data: pd.DataFrame,\n    actual_values_col: str,\n    target_meta: MetaDataConfig[TargetMetaData],\n    iso_format: str = _DEFAULT_ISO_FORMAT,\n    timestamp_column: str = _DEFAULT_TIMESTAMP_COLUMN,\n) -> TJson:\n    \"\"\"Creates a list of actual values in the format of the ``actuals`` endpoint.\n\n    Args:\n        actual_values_data: dataframe with actual values.\n        actual_values_col: column with actual values.\n        target_meta: target meta information.\n        iso_format: format for timestamp.\n        timestamp_column: column name for timestamp.\n\n    Returns:\n        An input to 'actuals' endpoint of cra_api.\n    \"\"\"\n    target_id_mapping = get_id_mapping(target_meta)\n    actual_values_data = actual_values_data.copy()\n    actual_values_data[timestamp_column] = get_timestamp_in_iso_format(\n        actual_values_data[timestamp_column], iso_format,\n    )\n    actuals = []\n    for _, row in actual_values_data.iterrows():\n        actual: TSingleDict = {\n            \"id\": str(uuid.uuid4()),\n            \"target_id\": target_id_mapping[actual_values_col],\n            \"value\": float(row[actual_values_col]),\n            \"timestamp\": str(row[timestamp_column]),\n        }\n        actuals.append(actual)\n\n    return tp.cast(TJson, actuals)\n",
+  "filepath": "demo_model\\src\\recommend\\cra_export\\cra_export.py",
+  "parameters": {
+    "recommend.cra_export.target_col": "silica_conc",
+    "recommend.cra_export.timestamp_format": "%Y-%m-%d %H:%M:%S",
+    "recommend.cra_export.timestamp_column": "timestamp"
+  },
+  "run_command": null,
+  "inputs": [
+    "actual_values_data",
+    "params:recommend.cra_export.target_col",
+    "target_meta",
+    "params:recommend.cra_export.timestamp_format",
+    "params:recommend.cra_export.timestamp_column"
+  ],
+  "outputs": [
+    "cra_actuals"
+  ]
+}

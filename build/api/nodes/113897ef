@@ -1,0 +1,11 @@
+{
+  "type": "io.memory_dataset.MemoryDataset",
+  "filepath": null,
+  "run_command": "kedro run --to-outputs=silicon_model.data_dropna",
+  "preview": null,
+  "preview_type": null,
+  "stats": {
+    "rows": 120,
+    "columns": 23
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "code": "def prepare_implementation_status(implementation_status: pd.DataFrame) -> TJson:\n    \"\"\"\n    Creates a list of implementation statuses to update the ``Recommendations``\n    endpoint of cra_api.\n\n    Args:\n        implementation_status: a percentage status.\n\n    Returns:\n        An input to update 'Recommendations' endpoint of cra_api.\n    \"\"\"\n    implementation_status_cra = (\n        implementation_status[[\"id\", \"implementation_perc\"]]\n        .rename({\"implementation_perc\": \"implementation_status\"}, axis=1)\n        .to_dict(orient=\"records\")\n    )\n    return tp.cast(TJson, implementation_status_cra)\n",
+  "filepath": "demo_model\\src\\recommend\\cra_export\\cra_export.py",
+  "parameters": {},
+  "run_command": null,
+  "inputs": [
+    "implementation_status"
+  ],
+  "outputs": [
+    "cra_implementation_status"
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "silicon_model.split.split_method": "date"
+  }
+}

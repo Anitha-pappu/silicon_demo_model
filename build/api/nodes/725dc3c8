@@ -1,0 +1,21 @@
+{
+  "code": "def drop_nan_rows(\n    data: pd.DataFrame,\n    target_column: str,\n    td: tp.Optional[api.SupportsTagDict] = None,\n    td_features_column: tp.Optional[str] = None,\n    model_features: tp.Optional[tp.List[str]] = None,\n) -> pd.DataFrame:\n    \"\"\"Drop any row that contains a nan in the desired feature + target set.\n    Must provide a tag dictionary and td indicator column or a list of model features.\n\n    Args:\n        data: dataframe to drop nans from.\n        target_column: string name of target column.\n        td: optional tag dictionary.\n        td_features_column: optional string name of feature indicator column in the\n            tag dictionary. This should be a column of True/False values indicating\n            which tags we should consider for the nan check.\n        model_features: optional list of model feature names.\n\n    Returns:\n        DataFrame with nan rows dropped.\n    \"\"\"\n    model_features = check_model_features(td, td_features_column, model_features)\n    n_samples_before = len(data)\n    data = data.dropna(subset=model_features + [target_column])\n    n_samples_after = len(data)\n    n_samples_dropped = n_samples_before - n_samples_after\n    logger.info(\n        f\"Dropping {n_samples_dropped}\"\n        \" rows with NaN values.\"\n        f\" Original sample size was {n_samples_before}\"\n        f\" and is now {n_samples_after}.\",\n    )\n    return data\n",
+  "filepath": "optimus_set_point_optimization_kedro_app-0.21.0\\src\\modeling\\utils.py",
+  "parameters": {
+    "baseline_model.train.target_column": "silica_conc",
+    "baseline_model.train.model_features": [
+      "iron_feed",
+      "silica_feed",
+      "feed_diff_divide_silica"
+    ]
+  },
+  "run_command": "kedro run --to-nodes=baseline_model.drop_nan_rows",
+  "inputs": [
+    "train_data",
+    "params:baseline_model.train.target_column",
+    "params:baseline_model.train.model_features"
+  ],
+  "outputs": [
+    "baseline_model.data_dropna"
+  ]
+}

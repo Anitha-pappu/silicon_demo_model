@@ -1,0 +1,8 @@
+{
+  "type": "html_dataset.html_dataset.HtmlReportDataset",
+  "filepath": "C:/Users/Anitha Pappu/Box Sync/Anitha Space/Anitha_Work/7. LOP/SAIL Client/demo_model/data/08_reporting/feature_report.html",
+  "run_command": "kedro run --to-outputs=feature_report",
+  "preview": null,
+  "preview_type": null,
+  "stats": null
+}

@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "feature_report.datetime_column": "timestamp"
+  }
+}

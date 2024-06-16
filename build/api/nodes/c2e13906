@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "model_monitoring.error_metric": "rmse"
+  }
+}

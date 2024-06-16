@@ -1,0 +1,10 @@
+{
+  "parameters": {
+    "recommend.problem": {
+      "type": "optimizer.problem.StatefulOptimizationProblem",
+      "kwargs": {
+        "sense": "minimize"
+      }
+    }
+  }
+}

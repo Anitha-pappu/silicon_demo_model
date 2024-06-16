@@ -1,0 +1,13 @@
+{
+  "code": "def prepare_states(\n    solutions: Solutions,\n    tag_meta: MetaDataConfig[TagMetaData],\n    states_to_export: tp.Optional[tp.List[str]] = None,\n) -> TJson:\n    \"\"\"\n    Creates a list of states in the format of ``states`` endpoint of cra_api.\n\n    Args:\n        solutions: a mapping of optimization results.\n        tag_meta: controlled parameters meta information.\n        states_to_export: a list of state variables to show on UI.\n\n    Returns:\n        An input to 'states' endpoint of cra_api.\n    \"\"\"\n\n    tag_id_mapping = get_id_mapping(tag_meta)\n    states = []\n    for solution in solutions.values():\n        states_selection = (\n            states_to_export\n            if states_to_export is not None\n            else solution.control_parameters_before.keys()\n        )\n        for state in states_selection:\n            single_state: TSingleDict = {\n                \"id\": str(uuid.uuid4()),\n                \"value\": solution.control_parameters_before[state],\n                \"run_id\": solution.run_id,\n                \"tag_id\": tag_id_mapping[state],\n            }\n            states.append(single_state)\n    return states\n",
+  "filepath": "demo_model\\src\\recommend\\cra_export\\cra_export.py",
+  "parameters": {},
+  "run_command": null,
+  "inputs": [
+    "solutions",
+    "tags_meta"
+  ],
+  "outputs": [
+    "cra_states"
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "cleaning.datetime_col": "TIME_STAMP"
+  }
+}

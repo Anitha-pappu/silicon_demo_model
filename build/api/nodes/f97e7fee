@@ -1,0 +1,18 @@
+{
+  "code": "def prepare_recommendations(\n    solutions: Solutions,\n    controlled_parameters_config: ControlledParametersConfig,\n    tag_meta: MetaDataConfig[TagMetaData],\n    target_meta: MetaDataConfig[TargetMetaData],\n    target_name: str,\n    default_status: str = \"Pending\",\n    default_flagged: bool = False,\n    active_controls_only: bool = True,\n) -> TJson:\n    \"\"\"Creates a list of recommendations in the format of the\n    ``recommendations`` endpoint.\n\n    Args:\n        solutions: a mapping of optimization results.\n        controlled_parameters_config: controlled parameters config.\n        tag_meta: controlled parameters meta information.\n        target_meta: target meta information.\n        target_name: name of the target.\n        default_status: default status. Defaults to \"Pending\".\n        default_flagged: default flagged. Defaults to False.\n        active_controls_only: exports only active controls if set True,\n            all controls otherwise\n\n    Returns:\n        An input to 'recommendations' endpoint of cra_api.\n    \"\"\"\n    tag_id_mapping = get_id_mapping(tag_meta)\n    target_id_mapping = get_id_mapping(target_meta)\n    tolerance_mapping = {conf.tag: conf.tolerance for conf in tag_meta}\n\n    recommendations = []\n    solution: Solution\n    for solution in solutions.values():\n        controls_to_export = (\n            solution.control_parameters_after.keys()\n            if active_controls_only\n            else list(controlled_parameters_config)\n        )\n        for control in controls_to_export:\n            single_recommendation: TSingleDict = {\n                \"id\": str(uuid.uuid4()),\n                \"value\": solution.control_parameters_after[control],\n                \"tolerance\": tolerance_mapping[control],\n                \"run_id\": solution.run_id,\n                \"tag_id\": tag_id_mapping[control],\n                \"target_id\": target_id_mapping[target_name],\n                \"is_flagged\": default_flagged,\n                \"status\": default_status,\n            }\n            recommendations.append(single_recommendation)\n    return recommendations\n",
+  "filepath": "demo_model\\src\\recommend\\cra_export\\cra_export.py",
+  "parameters": {
+    "recommend.cra_export.target_col": "silica_conc"
+  },
+  "run_command": null,
+  "inputs": [
+    "solutions",
+    "controlled_parameters_config",
+    "tags_meta",
+    "target_meta",
+    "params:recommend.cra_export.target_col"
+  ],
+  "outputs": [
+    "cra_recommendations"
+  ]
+}

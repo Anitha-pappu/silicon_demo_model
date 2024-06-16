@@ -1,0 +1,17 @@
+{
+  "code": "def round_timestamps(\n    frequency: str,\n    data: pd.DataFrame,\n    datetime_col: str = \"timestamp\",\n) -> pd.DataFrame:\n    \"\"\"\n    Rounds timestamps in order to reduce minor timestamp noise.\n    Different frequency aliases can be found here:\n    https://pandas.pydata.org/docs/user_guide/timeseries.html#timeseries-offset-aliases\n\n    Args:\n       frequency: timeseries offset aliases.\n       data: input data\n       datetime_col: timestamp column\n\n    Returns:\n       data with rounded timestamps\n    \"\"\"\n    data = data.copy()\n    data[datetime_col] = pd.to_datetime(data[datetime_col]).dt.round(frequency)\n    logger.info(f\"Rounding '{datetime_col}' to '{frequency}' frequency.\")\n    return data\n",
+  "filepath": "demo_model\\src\\preprocessing\\timezones.py",
+  "parameters": {
+    "cleaning.round_timestamps.frequency": "1h",
+    "cleaning.unitifed_timestamp": "timestamp"
+  },
+  "run_command": "kedro run --to-nodes=round_timestamps",
+  "inputs": [
+    "params:cleaning.round_timestamps.frequency",
+    "post_unify_timestamp_col_name",
+    "params:cleaning.unitifed_timestamp"
+  ],
+  "outputs": [
+    "post_round_timestamps"
+  ]
+}

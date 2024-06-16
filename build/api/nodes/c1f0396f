@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "recommend.cra_export.target_col": "silica_conc"
+  }
+}

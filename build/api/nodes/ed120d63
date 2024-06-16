@@ -1,0 +1,32 @@
+{
+  "code": "def plot_feature_overviews(\n    data: TData,\n    features: tp.Union[str, tp.Iterable[str]],\n    timestamp: str,\n    tag_ranges: tp.Optional[TRangeOrDictWithRange] = None,\n    target: tp.Optional[str] = None,\n    title: tp.Optional[str] = None,\n    add_common_plots: bool = False,\n    labels_length_limit: int = 20,\n    fig_params: tp.Optional[TDict] = None,\n    layout_params: tp.Optional[TDict] = None,\n) -> tp.Union[go.Figure, TRenderingAgnosticDict]:\n    \"\"\"\n    Create plots a collection of plots representing chosen feature \"overview\".\n    This includes a boxplot and histogram to understand the distribution of values,\n    a scatter-plot vs the `target` variable, and a time-series plot of the `feature` and\n    `target`.\n\n    Args:\n        data: data to plot. It can be either a dataframe or a list or dictionary of them\n        features: feature or features to show\n        tag_ranges: tag's or tags' ranges (min, max) to show\n        timestamp: column name of the timestamp associated with the feature\n        target: column name of the target variable\n        title: title of the chart\n        add_common_plots: if True, adds correlation matrix and scatter plots with target\n        labels_length_limit: limits feature name to `name[:feature_name_limit]...`\n            in case it's too long\n        fig_params: kwargs for plotly chart function\n        layout_params: dictionary containing keys and values for updating\n            the plotly fig layout\n\n    Returns:\n        dictionary containing plotly feature overview chart\n    \"\"\"\n\n    features = _transform_features(features)\n    data_df = data\n    data = _validate_transform_data(\n        data, timestamp, features, target, labels_length_limit,\n    )\n    tag_ranges = _validate_tag_ranges(features, tag_ranges)\n\n    figs: TRenderingAgnosticDict = {\n        feature: plot_feature_overview(\n            data=data,\n            feature=feature,\n            timestamp=timestamp,\n            target=target,\n            tag_range=tag_ranges.get(feature),\n            title=title,\n            labels_length_limit=labels_length_limit,\n            fig_params=fig_params,\n            layout_params=layout_params,\n        )\n        for feature in features\n    }\n    if len(features) == 1:\n        return figs[features[0]]\n\n    if add_common_plots:\n        _add_common_plots(figs, data, features, target, labels_length_limit)\n\n    \n    figs['pair_plots'] = plot_pair_plot(data_df[features[:7]+[target]],features,target)\n\n    return figs\n",
+  "filepath": "demo_model\\src\\reporting\\reports\\features_overview.py",
+  "parameters": {
+    "feature_report.features": [
+      "avg_uptake_press",
+      "coke_thickness_belly",
+      "humidity",
+      "MGO_slag",
+      "PCI_KG_THM",
+      "pellet_percent",
+      "sinter_percent",
+      "SIO2_slag",
+      "SLAG_VOL_KG_THM",
+      "dry_cokerate_pro"
+    ],
+    "feature_report.datetime_column": "timestamp",
+    "feature_report.target_column": "silicon",
+    "feature_report.title": "Feature report sample data"
+  },
+  "run_command": "kedro run --to-nodes=plot_features",
+  "inputs": [
+    "model_input_data",
+    "params:feature_report.features",
+    "params:feature_report.datetime_column",
+    "params:feature_report.target_column",
+    "params:feature_report.title"
+  ],
+  "outputs": [
+    "feature_report"
+  ]
+}

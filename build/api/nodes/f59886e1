@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "model_monitoring.error_multiplier": 1.96
+  }
+}

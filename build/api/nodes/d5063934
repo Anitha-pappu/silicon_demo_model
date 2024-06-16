@@ -1,0 +1,8 @@
+{
+  "parameters": {
+    "recommend.cra_export.cols_export": {
+      "baseline": "model_prediction",
+      "optimized": "value_after_recs"
+    }
+  }
+}

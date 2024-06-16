@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "impact.agg_granularity_method": "block"
+  }
+}

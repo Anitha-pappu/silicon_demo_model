@@ -1,0 +1,10 @@
+{
+  "code": "def prepare_sse() -> TSingleDict:\n    \"\"\"\n    Signals the end of recommendations updates in the format of the ``sse`` endpoint.\n\n    Returns:\n        An input to 'see' endpoint of cra_api.\n    \"\"\"\n    return {\"event\": \"ui_update\"}\n",
+  "filepath": "demo_model\\src\\recommend\\cra_export\\cra_export.py",
+  "parameters": {},
+  "run_command": null,
+  "inputs": [],
+  "outputs": [
+    "cra_sse"
+  ]
+}

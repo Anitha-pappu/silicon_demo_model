@@ -1,0 +1,45 @@
+{
+  "code": null,
+  "filepath": null,
+  "parameters": {
+    "impact.baseline_col": "model_prediction",
+    "impact.after_imp_col": "value_after_recs",
+    "impact.datetime_col": "timestamp",
+    "impact.group_characteristics": {
+      "low_silica": {
+        "silica_conc": {
+          "lower_value": 0.0,
+          "upper_value": 3.0
+        }
+      },
+      "high_silica": {
+        "silica_conc": {
+          "lower_value": 3.0,
+          "upper_value": 50.0
+        }
+      }
+    },
+    "impact.default_group": "other_group",
+    "impact.agg_granularity": "3H",
+    "impact.agg_granularity_func": "sum",
+    "impact.agg_granularity_method": "block",
+    "impact.uplifts_original_gran": "3H"
+  },
+  "run_command": "kedro run --to-nodes=get_uplifts",
+  "inputs": [
+    "test_data_with_baseline_predictions",
+    "value_after_recs_act",
+    "params:impact.baseline_col",
+    "params:impact.after_imp_col",
+    "params:impact.datetime_col",
+    "params:impact.group_characteristics",
+    "params:impact.default_group",
+    "params:impact.agg_granularity",
+    "params:impact.agg_granularity_func",
+    "params:impact.agg_granularity_method",
+    "params:impact.uplifts_original_gran"
+  ],
+  "outputs": [
+    "uplifts"
+  ]
+}

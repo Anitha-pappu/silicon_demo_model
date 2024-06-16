@@ -1,0 +1,13 @@
+{
+  "code": "def calculate_metrics(\n    data: pd.DataFrame,\n    model: EvaluatesMetrics,\n    **predict_kwargs: tp.Any,\n) -> tp.Dict[str, float]:\n    \"\"\"\n    Calculate a standard set of model's regression metrics for given data.\n    Automatically infers actual target values (based on target column name specified\n    in model), generates predictions, and uses the two to calculate performance metrics.\n\n    Args:\n        data: to calculate metrics for.\n        model: trained instance of ModelBase.\n        predict_kwargs: keyword arguments to ``.predict()`` method.\n\n    Returns:\n        A dictionary of metrics names and values.\n    \"\"\"\n    return model.evaluate_metrics(data, **predict_kwargs)\n",
+  "filepath": "optimus_set_point_optimization_kedro_app-0.21.0\\src\\modeling\\models\\functional\\calculate_metrics.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes=baseline_model.create_test_metrics",
+  "inputs": [
+    "baseline_test_data",
+    "baseline_trained_model"
+  ],
+  "outputs": [
+    "baseline_test_metrics"
+  ]
+}

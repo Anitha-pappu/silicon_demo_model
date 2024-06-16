@@ -1,0 +1,16 @@
+{
+  "code": "def tune_model(\n    model_tuner: ModelTunerBase,\n    hyperparameters_config: tp.Optional[tp.Dict[str, tp.Any]],\n    data: pd.DataFrame,\n    **tuner_fit_kwargs: tp.Any,\n) -> ModelBase:\n    \"\"\"\n    Tune hyperparameters for instance of ``ModelBase`` using model tuner\n    and tuner parameters in ``hyperparameters_config``.\n\n    Args:\n        model_tuner: model tuner instance\n        hyperparameters_config: config with hyperparameter tuning specification\n        data: data to use for hyperparameters tuning\n        **tuner_fit_kwargs: keyword arguments to ``.fit`` method.\n\n    Returns:\n        ``BaseModel`` instance with hyperparameters hyperparameters tuned\n        and DataFrame with tuning results.\n    \"\"\"\n    return model_tuner.tune(\n        hyperparameters_config=hyperparameters_config, data=data, **tuner_fit_kwargs,\n    )\n",
+  "filepath": "demo_model\\src\\modeling\\models\\functional\\tune_model.py",
+  "parameters": {
+    "silicon_model.tune.hyperparameters": null
+  },
+  "run_command": null,
+  "inputs": [
+    "silicon_model.model_tuner",
+    "params:silicon_model.tune.hyperparameters",
+    "train_data"
+  ],
+  "outputs": [
+    "silicon_model.tuned_model"
+  ]
+}

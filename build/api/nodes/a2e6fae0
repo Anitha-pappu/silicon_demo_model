@@ -1,0 +1,70 @@
+{
+  "code": "def get_solutions_overview(\n    solutions: Solutions,\n    actual_target_column: str,\n    timestamp_column: str = \"timestamp\",\n    objective_units: str | None = None,\n    controls_config: _TControlsConfig = None,\n    reference_data: pd.DataFrame | None = None,\n    cluster_column: str | None = None,\n) -> TRenderingAgnosticDict:\n    \"\"\"\n    Generates multi-level dict of figures for the Solutions Overview.\n\n    There are 7 main sections in this report:\n        1. Overall summary (what's the overall uplift;\n           how many rows were optimized; objective before & after comparison)\n        2. [WIP] Recs availability (what are the reasons our rows aren't optimized)\n        3. Constraints analysis (constraints timeline,\n           summary table by index and by constraint)\n        4. Data insights (includes basic EDA + solutions' data vs reference comparison)\n        5. [WIP] Model insights (compare model performance on two datasets\n           used for optimization and for training)\n        6. Controls analysis (compare controls on before & after the optimization)\n\n\n    This report can be viewed in the notebook or\n    used in report generation to produce standalone report file.\n\n    Args:\n        solutions: results of optimization (``recommend.optimize`` call)\n        actual_target_column: actual target values\n            (i.e. true, non-modelled value of objective seen at this step)\n        timestamp_column:\n        objective_units: is shown in the summary section\n        controls_config: list of controls' parameters that is parsed into\n            list[ControlledParameter]\n        reference_data: dataset used for models training;\n            if provided, used as a reference for comparing missing values,\n            controls from ``controls_config`` and\n            ``actual_target_column`` distributions\n        cluster_column: input data cluster column;\n            if provided, adds \"Cluster Analysis\" chart to \"Data Insights\" section\n\n    Returns:\n        Dictionary of recommendations analysis figures\n    \"\"\"\n\n    if not solutions:\n        warnings.warn(\"Solutions are empty\")\n        return {}\n\n    df = solutions.to_frame()\n    df_before_after = df[df[\"is_successful_optimization\"]]\n\n    return {\n        \"Results Overview\": _get_results_overview_section(\n            solutions,\n            df_before_after,\n            actual_target_column,\n            objective_units,\n            timestamp_column,\n        ),\n        \"Controls Analysis\": _get_controls_analysis_section(\n            solutions,\n            df_before_after,\n            timestamp_column,\n            controls_config,\n        ),\n        \"Constraints Analysis\": _get_constraints_section(\n            solutions,\n            timestamp_column,\n        ),\n        \"Data Insights\": _get_data_insights_section(\n            solutions,\n            actual_target_column,\n            timestamp_column,\n            reference_data,\n            cluster_column,\n        ),\n    }\n",
+  "filepath": "optimus_set_point_optimization_kedro_app-0.21.0\\src\\recommend\\report\\_solutions_overview.py",
+  "parameters": {
+    "recommend.actual_target_column": "silica_conc",
+    "recommend.objective_units": "%",
+    "recommend.controlled_parameters": [
+      {
+        "name": "starch_flow",
+        "op_min": 3000,
+        "op_max": 4000,
+        "step_size": 200,
+        "max_delta": 800
+      },
+      {
+        "name": "amina_flow",
+        "op_min": 450,
+        "op_max": 650,
+        "step_size": 50,
+        "max_delta": 100
+      },
+      {
+        "name": "ore_pulp_flow",
+        "op_min": 400,
+        "op_max": 410,
+        "step_size": 2,
+        "max_delta": 10
+      },
+      {
+        "name": "ore_pulp_ph",
+        "op_min": 9.5,
+        "op_max": 10.5,
+        "step_size": 0.05,
+        "max_delta": 0.4
+      },
+      {
+        "name": "ore_pulp_density",
+        "op_min": 1.65,
+        "op_max": 1.75,
+        "step_size": 0.1,
+        "max_delta": 0.1
+      },
+      {
+        "name": "total_air_flow",
+        "op_min": 1000,
+        "op_max": 2000,
+        "step_size": 100,
+        "max_delta": 500
+      },
+      {
+        "name": "total_column_level",
+        "op_min": 1000,
+        "op_max": 5000,
+        "step_size": 200,
+        "max_delta": 1000
+      }
+    ]
+  },
+  "run_command": "kedro run --to-nodes=get_solutions_overview",
+  "inputs": [
+    "solutions",
+    "params:recommend.actual_target_column",
+    "params:recommend.objective_units",
+    "params:recommend.controlled_parameters",
+    "train_data"
+  ],
+  "outputs": [
+    "solutions_overview"
+  ]
+}

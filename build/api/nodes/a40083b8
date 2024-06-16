@@ -1,0 +1,24 @@
+{
+  "code": "def create_features(params: tp.Dict[str, tp.Any], data: pd.DataFrame) -> pd.DataFrame:\n    \"\"\"Wrapper function to run DerivedFeaturesMaker for Kedro pipeline\n\n    Args:\n        params (Dict): dict of kedro pipeline parameters\n        data (pd.DataFrame): data\n\n    Returns:\n        pd.DataFrame: data with new features\n    \"\"\"\n\n    transformer = FeatureFactory(params)\n    transformer.fit(data)\n    return transformer.transform(data)\n",
+  "filepath": "demo_model\\src\\feature_factory\\feature_factory.py",
+  "parameters": {
+    "feature_factory": {
+      "total_k": {
+        "dependencies": [
+          "lower_k",
+          "middle_k",
+          "upper_k"
+        ],
+        "function": "feature_factory.sample_function.pandas_sum"
+      }
+    }
+  },
+  "run_command": "kedro run --to-nodes=create_features",
+  "inputs": [
+    "params:feature_factory",
+    "preprocessed_data"
+  ],
+  "outputs": [
+    "model_input_data"
+  ]
+}

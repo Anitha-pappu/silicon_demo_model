@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "silica_model.split.split_method": "date"
+  }
+}

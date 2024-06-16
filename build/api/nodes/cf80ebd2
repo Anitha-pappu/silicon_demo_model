@@ -1,0 +1,37 @@
+{
+  "code": "def create_solver_factory(\n    *,\n    controlled_parameters_config: ControlledParametersConfig,\n    factory_spec: _TRawSpec = _DEFAULT_SOLVER_FACTORY_SPEC,\n    solver_spec: _TRawSpec,\n    stopper_spec: _TRawSpec,\n    domain_generator_spec: _TRawSpec = _EMPTY_SPEC,\n) -> SolverFactory:\n    \"\"\"\n    This function implements a functional interface for creating the solver factory.\n    Which is useful in different workflow-control systems like kedro/airflow/etc.\n\n    Parses spec args using ``recommend.functional.ObjectSpec``\n    and creates solver factory instance (``factory_spec.type`` instance)\n    with the rest of the arguments used in factory's init::\n        >>> return factory_spec_.type(\n        ...     controlled_parameters_config,\n        ...     solver_spec_.type,\n        ...     solver_spec_.kwargs,\n        ...     stopper_spec_.type,\n        ...     stopper_spec_.kwargs,\n        ...     domain_generator_spec_.type,\n        ...     domain_generator_spec_.kwargs,\n        ... )\n    \"\"\"\n    factory_spec_ = parse_obj_as(ObjectSpec[tp.Type[SolverFactory]], factory_spec)\n    solver_spec_ = parse_obj_as(ObjectSpec[tp.Type[Solver]], solver_spec)\n    stopper_spec_ = parse_obj_as(ObjectSpec[tp.Type[BaseStopper]], stopper_spec)\n    domain_generator_spec_ = parse_obj_as(\n        ObjectSpec[tp.Type[BaseDomainGenerator]], domain_generator_spec,\n    )\n    if factory_spec_.type is None:\n        raise ValueError(\"Factory type can't be None\")\n    if solver_spec_.type is None:\n        raise ValueError(\"Solver type can't be None\")\n    return factory_spec_.type(\n        controlled_parameters_config,\n        solver_spec_.type,\n        solver_spec_.kwargs,\n        stopper_spec_.type,\n        stopper_spec_.kwargs,\n        domain_generator_spec_.type,\n        domain_generator_spec_.kwargs,\n    )\n",
+  "filepath": "demo_model\\src\\recommend\\functional.py",
+  "parameters": {
+    "recommend.solver": {
+      "type": "optimizer.solvers.DifferentialEvolutionSolver",
+      "kwargs": {
+        "sense": "minimize",
+        "seed": 0,
+        "maxiter": 100,
+        "mutation": [
+          0.5,
+          1.0
+        ],
+        "recombination": 0.7,
+        "strategy": "best1bin"
+      }
+    },
+    "recommend.stopper": {
+      "type": "optimizer.stoppers.NoImprovementStopper",
+      "kwargs": {
+        "patience": 10,
+        "min_delta": 0.1,
+        "sense": "minimize"
+      }
+    }
+  },
+  "run_command": "kedro run --to-nodes=create_solver_factory",
+  "inputs": [
+    "controlled_parameters_config",
+    "params:recommend.solver",
+    "params:recommend.stopper"
+  ],
+  "outputs": [
+    "solver_factory"
+  ]
+}

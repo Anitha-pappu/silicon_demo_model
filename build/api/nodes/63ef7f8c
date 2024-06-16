@@ -1,0 +1,17 @@
+{
+  "code": "def get_value_after_recs_impact(\n    data: pd.DataFrame,\n    datetime_column: str = \"timestamp\",\n    value_after_recs: ActualValueMethod | str = \"value_after_recs\",\n    value_after_recs_kwargs: tp.Optional[tp.Dict[str, tp.Any]] = None,\n) -> pd.DataFrame:\n    \"\"\"\n    Calculate the value after recommendations are implemented to calculate impact\n    estimation.\n\n    Args:\n        data: data to calculate the actual value from.\n        datetime_column: Name of the column in the data that contains the datetime.\n        value_after_recs: If it is a function, it must have ``ActualValueMethod``\n            signature. If it is a string, it must be the name of the column in the\n            ``data`` that contains the actual value.\n        value_after_recs_kwargs: Arguments to pass to the actual value function.\n\n    Returns:\n        Dataframe with value after recommendations.\n\n    Raises:\n        TypeError: If the actual value type is not valid.\n\n    \"\"\"\n    if isinstance(value_after_recs, str):\n        return data[[datetime_column, value_after_recs]].rename(\n            {value_after_recs: \"value_after_recs\"}, axis=1,\n        ).copy()\n    elif isinstance(value_after_recs, ActualValueMethod):\n        return value_after_recs(\n            data,\n            datetime_column,\n            **(value_after_recs_kwargs or {}),\n        )\n    raise TypeError(\n        \"Unknown actual_value type. Valid values are complying with \"\n        \"`ActualValueMethod` protocol or a string.\",\n    )\n",
+  "filepath": "demo_model\\src\\recommend\\uplift\\value_after_recs.py",
+  "parameters": {
+    "impact.datetime_col": "timestamp",
+    "impact.target_col": "silicon"
+  },
+  "run_command": "kedro run --to-nodes=get_value_after_recs_act",
+  "inputs": [
+    "test_data",
+    "params:impact.datetime_col",
+    "params:impact.target_col"
+  ],
+  "outputs": [
+    "value_after_recs_act"
+  ]
+}

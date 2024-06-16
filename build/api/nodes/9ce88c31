@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "impact.after_imp_col": "value_after_recs"
+  }
+}

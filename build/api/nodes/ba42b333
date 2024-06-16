@@ -1,0 +1,12 @@
+{
+  "parameters": {
+    "recommend.stopper": {
+      "type": "optimizer.stoppers.NoImprovementStopper",
+      "kwargs": {
+        "patience": 10,
+        "min_delta": 0.1,
+        "sense": "minimize"
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "recommend.cra_export.timestamp_column": "timestamp"
+  }
+}

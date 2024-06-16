@@ -1,0 +1,8 @@
+{
+  "type": "kedro_utils.tag_config_dataset.TagsConfigCSVDataset",
+  "filepath": "C:/Users/Anitha Pappu/Box Sync/Anitha Space/Anitha_Work/7. LOP/SAIL Client/demo_model/data/01_raw/sample_tags_resample_config.csv",
+  "run_command": null,
+  "preview": null,
+  "preview_type": "TablePreview",
+  "stats": null
+}

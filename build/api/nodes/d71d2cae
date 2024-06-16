@@ -1,0 +1,12 @@
+{
+  "code": null,
+  "filepath": null,
+  "parameters": {},
+  "run_command": null,
+  "inputs": [
+    "plant_status_config"
+  ],
+  "outputs": [
+    "plant_status"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "code": "def resample_data(\n    data: pd.DataFrame,\n    resample_config: TagsConfig[TagResampleParameters],\n    timestamp_col: str,\n    errors: tp.Literal[\"raise\", \"coerce\"] = \"coerce\",\n    default_method: str = \"mean\",\n    default_rule: str = \"1H\",\n    default_offset: str = \"0min\",\n    **kwargs: tp.Any,\n) -> pd.DataFrame:\n    \"\"\"Resample data according to configurations in resample_df.\n\n    Args:\n        data: input data\n        resample_config: TagsConfig with resample configurations for each tag\n        timestamp_col: timestamp column name to use as index\n        errors: 'raise' or 'coerce', behavior when an invalid method is specified\n        default_method: method to use when agg_method is missing from resample_df\n        default_rule: rule to use when rule is missing from resample_df\n        default_offset: offset to use when offset is missing from resample_df\n        **kwargs: additional arguments to pass to pandas resample\n    Returns:\n        data_resampled: resampled output data\n    \"\"\"\n\n    if not is_datetime(data[timestamp_col]):\n        data[timestamp_col] = pd.to_datetime(data[timestamp_col])\n\n    data.set_index(timestamp_col, drop=True, inplace=True)\n\n    result_series = {}\n\n    for tag in data.columns:\n        # Get resampling parameters for the tag, or use defaults\n        agg_method = _get_valid_agg_method(tag, resample_config, errors, default_method)\n        rule = _get_valid_resample_freq(tag, resample_config, default_rule)\n        offset = _get_valid_resample_offset(tag, resample_config, default_offset)\n\n        # Apply resampling with extracted or default parameters\n        resampled_data = data[tag].resample(\n            rule=rule,\n            offset=offset,\n            **(kwargs or {}),\n        ).agg(agg_method)\n        result_series[tag] = resampled_data\n\n    data_resampled = pd.DataFrame(result_series)\n\n    return data_resampled.reset_index()\n",
+  "filepath": "demo_model\\src\\preprocessing\\resampling.py",
+  "parameters": {
+    "cleaning.unitifed_timestamp": "timestamp",
+    "cleaning.resample_errors": "coerce"
+  },
+  "run_command": "kedro run --to-nodes=resample_data",
+  "inputs": [
+    "post_set_off_equipment_to_zero",
+    "tags_resample_config",
+    "params:cleaning.unitifed_timestamp",
+    "params:cleaning.resample_errors"
+  ],
+  "outputs": [
+    "preprocessed_data"
+  ]
+}

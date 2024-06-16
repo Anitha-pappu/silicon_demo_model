@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "feature_report.target_column": "silicon"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "parameters": {
+    "recommend.solver": {
+      "type": "optimizer.solvers.DifferentialEvolutionSolver",
+      "kwargs": {
+        "sense": "minimize",
+        "seed": 0,
+        "maxiter": 100,
+        "mutation": [
+          0.5,
+          1.0
+        ],
+        "recombination": 0.7,
+        "strategy": "best1bin"
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "code": "def train_model(\n    model: TModel, data: pd.DataFrame, **model_fit_kwargs: tp.Any,\n) -> TModel:\n    \"\"\"\n    Fit the ``ModelBase`` instance with the provided data.\n\n    Args:\n        model: instance of ModelBase\n        data: data to use for train\n        **model_fit_kwargs: keyword arguments to ``.fit`` method.\n\n    Returns:\n        trained instance of ``ModelBase``\n    \"\"\"\n    return model.fit(data, **model_fit_kwargs)\n",
+  "filepath": "optimus_set_point_optimization_kedro_app-0.21.0\\src\\modeling\\models\\functional\\train_model.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes=silica_model.train_model",
+  "inputs": [
+    "silica_model.tuned_model",
+    "train_data"
+  ],
+  "outputs": [
+    "trained_model"
+  ]
+}

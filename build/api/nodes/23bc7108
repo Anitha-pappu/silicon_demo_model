@@ -1,0 +1,12 @@
+{
+  "code": "def remove_null_columns(data: pd.DataFrame) -> pd.DataFrame:\n    \"\"\"Identify columns that contain all NaN/NaTs and drop them\n\n    Args:\n       data: input pandas dataframe\n\n    Returns:\n       data\n    \"\"\"\n    # Get initial columns from data\n    data_columns = set(data.columns)\n\n    # Drop all columns that are comprised of ALL NaN's/NaT's\n    data = data.dropna(axis=1, how=\"all\")\n\n    # Get a set of all the columns that have been dropped\n    dropped_columns = data_columns.difference(set(data.columns))\n\n    if dropped_columns:\n        logger.info(\n            f\"Dropped columns: {dropped_columns} due to all\"\n            \" column values being NaN/NaT\",\n        )\n        quality_check_logger.info(\n            f\"Dropped columns: {dropped_columns} due to all\"\n            \" column values being NaN/NaT\",\n        )\n    else:\n        logger.info(\"All columns have values. Continuing...\")\n    return data\n",
+  "filepath": "demo_model\\src\\preprocessing\\cleaning.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes=remove_null_columns",
+  "inputs": [
+    "post_replace_inf_values"
+  ],
+  "outputs": [
+    "post_remove_null_columns"
+  ]
+}

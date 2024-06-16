@@ -1,0 +1,12 @@
+{
+  "code": "                lambda uplifts: uplifts.data,\n",
+  "filepath": "optimus_set_point_optimization_kedro_app-0.21.0\\src\\set_point_optimization_kedro\\pipelines\\impact.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes=uplifts_data",
+  "inputs": [
+    "uplifts"
+  ],
+  "outputs": [
+    "uplifts_data"
+  ]
+}

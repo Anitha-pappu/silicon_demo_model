@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "baseline_model.train.factory_class_name": "modeling.SklearnPipelineFactory"
+  }
+}

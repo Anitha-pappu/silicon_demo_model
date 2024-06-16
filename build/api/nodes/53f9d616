@@ -1,0 +1,17 @@
+{
+  "code": "def get_impact_estimation(\n    uplifts: BaselineUplifts,\n    annualize: bool = False,\n    timestamp_col: str = \"timestamp\",\n) -> pd.DataFrame:\n    \"\"\"\n    Calculate impact estimation from uplifts. First, uplifts are added to find the\n    impact and reported by the name 'all_data'. Then, if ``by_group`` is True, uplifts\n    are also added by group and reported under the group name. Finally, if annualize\n    is True, the impact is extrapolated to a year period.\n\n    Args:\n        uplifts: Uplifts to calculate impact estimation for.\n        annualize: Whether to annualize the impact estimation. If True, the impact found\n            in the period of time between the start and end of the uplifts will be\n            extrapolated to a year period, assuming that the impact per time unit is\n            constant.\n        timestamp_col: Name of the timestamp column in ``uplift`` data.\n\n    Returns:\n        Dataframe with impact estimation.\n\n    \"\"\"\n\n    impact = pd.DataFrame(\n        {\n            \"group\": uplifts.group_names,\n            \"uplift\": np.nan,\n        },\n    )\n    for group, uplifts_group in uplifts.group_iterator():\n        impact.loc[impact[\"group\"] == group, \"uplift\"] = uplifts_group[\"uplift\"].sum()\n\n    if annualize:\n        min_timestamp = uplifts.data[timestamp_col].min()\n        max_timestamp = uplifts.data[timestamp_col].max()\n        if min_timestamp == max_timestamp:\n            raise ValueError(\n                \"Cannot annualize impact estimation when all uplifts are on the same \"\n                \"timestamp.\",\n            )\n        impact[\"uplift\"] = impact[\"uplift\"] / (\n            (max_timestamp - min_timestamp) / pd.Timedelta(\"365D\")\n        )\n\n    return impact\n",
+  "filepath": "optimus_set_point_optimization_kedro_app-0.21.0\\src\\recommend\\uplift\\impact_calculation.py",
+  "parameters": {
+    "impact.annualize_impact": true,
+    "impact.datetime_col": "timestamp"
+  },
+  "run_command": "kedro run --to-nodes=get_impact_estimation",
+  "inputs": [
+    "uplifts",
+    "params:impact.annualize_impact",
+    "params:impact.datetime_col"
+  ],
+  "outputs": [
+    "impact"
+  ]
+}

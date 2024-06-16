@@ -1,0 +1,12 @@
+{
+  "code": null,
+  "filepath": null,
+  "parameters": {},
+  "run_command": null,
+  "inputs": [
+    "target_meta_config"
+  ],
+  "outputs": [
+    "target_meta"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "code": "def drop_nan_rows(\n    data: pd.DataFrame,\n    target_column: str,\n    td: tp.Optional[api.SupportsTagDict] = None,\n    td_features_column: tp.Optional[str] = None,\n    model_features: tp.Optional[tp.List[str]] = None,\n) -> pd.DataFrame:\n    \"\"\"Drop any row that contains a nan in the desired feature + target set.\n    Must provide a tag dictionary and td indicator column or a list of model features.\n\n    Args:\n        data: dataframe to drop nans from.\n        target_column: string name of target column.\n        td: optional tag dictionary.\n        td_features_column: optional string name of feature indicator column in the\n            tag dictionary. This should be a column of True/False values indicating\n            which tags we should consider for the nan check.\n        model_features: optional list of model feature names.\n\n    Returns:\n        DataFrame with nan rows dropped.\n    \"\"\"\n    model_features = check_model_features(td, td_features_column, model_features)\n    n_samples_before = len(data)\n    data = data.dropna(subset=model_features + [target_column])\n    n_samples_after = len(data)\n    n_samples_dropped = n_samples_before - n_samples_after\n    logger.info(\n        f\"Dropping {n_samples_dropped}\"\n        \" rows with NaN values.\"\n        f\" Original sample size was {n_samples_before}\"\n        f\" and is now {n_samples_after}.\",\n    )\n    return data\n",
+  "filepath": "demo_model\\src\\modeling\\utils.py",
+  "parameters": {
+    "silicon_model.train.target_column": "silicon",
+    "silicon_model.train.model_features": [
+      "al2o3_slag",
+      "avg_uptake_press",
+      "c_2_hm",
+      "CAO_slag",
+      "coke_thickness_belly",
+      "ETA_CO",
+      "HBT",
+      "humidity",
+      "m_value",
+      "MGO_slag",
+      "total_k",
+      "PCI_KG_THM",
+      "pellet_percent",
+      "production_rate",
+      "sinter_percent",
+      "SIO2_slag",
+      "SLAG_VOL_KG_THM",
+      "dry_cokerate_pro"
+    ]
+  },
+  "run_command": "kedro run --to-nodes=silicon_model.drop_nan_rows",
+  "inputs": [
+    "model_input_data",
+    "params:silicon_model.train.target_column",
+    "params:silicon_model.train.model_features"
+  ],
+  "outputs": [
+    "silicon_model.data_dropna"
+  ]
+}

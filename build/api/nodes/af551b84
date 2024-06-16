@@ -1,0 +1,28 @@
+{
+  "parameters": {
+    "live_monitoring.detectors": {
+      "preprocessing.MissingValuesDetector": {
+        "time_window": "3H",
+        "threshold": 0.5
+      },
+      "preprocessing.RangeDetector": {
+        "time_window": "3H",
+        "threshold": 0.5,
+        "tag_range": {
+          "iron_feed": [
+            30,
+            70
+          ],
+          "silica_feed": [
+            0,
+            35
+          ],
+          "ore_pulp_ph": [
+            8.5,
+            12
+          ]
+        }
+      }
+    }
+  }
+}

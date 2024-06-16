@@ -1,0 +1,34 @@
+{
+  "parameters": {
+    "silica_model.tune.tuner": {
+      "class_name": "sklearn.model_selection.GridSearchCV",
+      "kwargs": {
+        "n_jobs": -1,
+        "refit": "mae",
+        "param_grid": {
+          "estimator__alpha": [
+            0.0001,
+            0.001,
+            0.01,
+            0.1,
+            1,
+            10
+          ],
+          "estimator__l1_ratio": [
+            0.00001,
+            0.0001,
+            0.001,
+            0.01,
+            0.1,
+            1
+          ]
+        },
+        "scoring": {
+          "mae": "neg_mean_absolute_error",
+          "rmse": "neg_root_mean_squared_error",
+          "r2": "r2"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "code": "def split_data(\n    data: pd.DataFrame,\n    splitter: SplitterBase,\n) -> tp.Tuple[pd.DataFrame, pd.DataFrame]:\n    \"\"\"Split data using the provided splitter.\n\n    Args:\n        data: input data to split.\n        splitter: instance of ``modeling.splitters.SplitterBase``\n\n    Returns:\n        (train, test) datasets.\n    \"\"\"\n    return splitter.split(data)\n",
+  "filepath": "optimus_set_point_optimization_kedro_app-0.21.0\\src\\modeling\\splitters\\_splitters\\functional.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes=silica_model.split_data",
+  "inputs": [
+    "silica_model.data_dropna",
+    "silica_model.splitter"
+  ],
+  "outputs": [
+    "train_data",
+    "test_data"
+  ]
+}

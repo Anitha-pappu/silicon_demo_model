@@ -1,0 +1,14 @@
+{
+  "parameters": {
+    "feature_factory": {
+      "total_k": {
+        "dependencies": [
+          "lower_k",
+          "middle_k",
+          "upper_k"
+        ],
+        "function": "feature_factory.sample_function.pandas_sum"
+      }
+    }
+  }
+}

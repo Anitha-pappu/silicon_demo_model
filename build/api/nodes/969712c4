@@ -1,0 +1,12 @@
+{
+  "code": null,
+  "filepath": null,
+  "parameters": {},
+  "run_command": null,
+  "inputs": [
+    "tag_meta_config"
+  ],
+  "outputs": [
+    "tags_meta"
+  ]
+}

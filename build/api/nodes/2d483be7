@@ -1,0 +1,19 @@
+{
+  "code": "def prepare_plant_info(\n    plant_info: MetaDataConfig[PlantStatusData],\n    solutions: Solutions,\n    actual_data: pd.DataFrame,\n    iso_format: str = _DEFAULT_ISO_FORMAT,\n    timestamp_column: str = _DEFAULT_TIMESTAMP_COLUMN,\n) -> TJson:\n    \"\"\"\n    Creates a list of plant information to update the ``plant_info`` endpoint of\n    cra_api.\n\n    Returns:\n        An input to update 'plant_info' endpoint of cra_api.\n    \"\"\"\n\n    run_ids = get_run_id(solutions, timestamp_column, iso_format)\n\n    actual_data = actual_data.copy()\n    actual_data[timestamp_column] = get_timestamp_in_iso_format(\n        actual_data[timestamp_column], iso_format,\n    )\n\n    plant_info_dict = []\n    for tag in plant_info:\n        for timestamp in run_ids.keys():\n            actual_value = actual_data.loc[\n                actual_data[timestamp_column] == timestamp, tag.tag,\n            ].iloc[0]\n            single_plant_info: TSingleDict = {\n                \"id\": str(uuid.uuid4()),\n                \"run_id\": run_ids[timestamp],\n                \"tag_id\": tag.id,\n                \"value\": actual_value,\n                \"column_name\": tag.column_name,\n                \"section\": tag.section,\n            }\n            plant_info_dict.append(single_plant_info)\n    return plant_info_dict\n",
+  "filepath": "demo_model\\src\\recommend\\cra_export\\cra_export.py",
+  "parameters": {
+    "recommend.cra_export.timestamp_format": "%Y-%m-%d %H:%M:%S",
+    "recommend.cra_export.timestamp_column": "timestamp"
+  },
+  "run_command": null,
+  "inputs": [
+    "plant_status",
+    "solutions",
+    "test_data",
+    "params:recommend.cra_export.timestamp_format",
+    "params:recommend.cra_export.timestamp_column"
+  ],
+  "outputs": [
+    "cra_plant_info"
+  ]
+}

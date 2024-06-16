@@ -1,0 +1,8 @@
+{
+  "parameters": {
+    "baseline_model.split.split_parameters": {
+      "datetime_column": "timestamp",
+      "freq": "14D"
+    }
+  }
+}

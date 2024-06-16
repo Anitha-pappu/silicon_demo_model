@@ -1,0 +1,12 @@
+{
+  "code": "                lambda dict_: dict_[\"plant_info\"],\n",
+  "filepath": "demo_model\\src\\set_point_optimization_kedro\\pipelines\\cra_export.py",
+  "parameters": {},
+  "run_command": null,
+  "inputs": [
+    "meta"
+  ],
+  "outputs": [
+    "plant_status_config"
+  ]
+}

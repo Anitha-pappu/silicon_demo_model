@@ -1,0 +1,2728 @@
+{
+  "nodes": [
+    {
+      "id": "e60d6d0c",
+      "name": "rename_tags",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [],
+      "parameters": {}
+    },
+    {
+      "id": "6c1f7ff8",
+      "name": "tags_raw_config",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "kedro_utils.tag_config_dataset.TagsConfigCSVDataset",
+      "stats": null
+    },
+    {
+      "id": "32bf0384",
+      "name": "input_data",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": "raw",
+      "dataset_type": "pandas.csv_dataset.CSVDataset",
+      "stats": {
+        "rows": 742,
+        "columns": 22,
+        "file_size": 118957
+      }
+    },
+    {
+      "id": "12543cc9",
+      "name": "renamed_input_data",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 742,
+        "columns": 22
+      }
+    },
+    {
+      "id": "315a31d4",
+      "name": "create_model_factory",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "parameters": {
+        "silicon_model.train.factory_class_name": "modeling.SklearnPipelineFactory",
+        "silicon_model.train.init": {
+          "estimator": {
+            "class_name": "sklearn.linear_model.SGDRegressor",
+            "kwargs": {
+              "random_state": 123,
+              "penalty": "elasticnet"
+            }
+          },
+          "transformers": [
+            {
+              "class_name": "sklearn.preprocessing.StandardScaler",
+              "kwargs": {},
+              "name": "standard_scaler",
+              "wrapper": "preserve_columns"
+            }
+          ]
+        },
+        "silicon_model.train.model_features": [
+          "al2o3_slag",
+          "avg_uptake_press",
+          "c_2_hm",
+          "CAO_slag",
+          "coke_thickness_belly",
+          "ETA_CO",
+          "HBT",
+          "humidity",
+          "m_value",
+          "MGO_slag",
+          "total_k",
+          "PCI_KG_THM",
+          "pellet_percent",
+          "production_rate",
+          "sinter_percent",
+          "SIO2_slag",
+          "SLAG_VOL_KG_THM",
+          "dry_cokerate_pro"
+        ],
+        "silicon_model.train.target_column": "silicon"
+      }
+    },
+    {
+      "id": "bf95147a",
+      "name": "params:silicon_model.train.factory_class_name",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "silicon_model",
+        "silicon_model.train"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "a8bcf880",
+      "name": "params:silicon_model.train.init",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "silicon_model",
+        "silicon_model.train"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "c4705528",
+      "name": "params:silicon_model.train.model_features",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "silicon_model",
+        "silicon_model.train"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "32d88557",
+      "name": "params:silicon_model.train.target_column",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "silicon_model",
+        "silicon_model.train"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "c219a063",
+      "name": "silicon_model.model_factory",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": null
+    },
+    {
+      "id": "81d1b266",
+      "name": "create_splitter",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "parameters": {
+        "silicon_model.split.split_method": "date",
+        "silicon_model.split.split_parameters": {
+          "datetime_column": "timestamp",
+          "split_datetime": "2019-03-27 23:00:00"
+        }
+      }
+    },
+    {
+      "id": "68cfaffc",
+      "name": "params:silicon_model.split.split_method",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "silicon_model",
+        "silicon_model.split"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "0a71ce3e",
+      "name": "params:silicon_model.split.split_parameters",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "silicon_model",
+        "silicon_model.split"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "c6d67de3",
+      "name": "silicon_model.splitter",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": null
+    },
+    {
+      "id": "7b81dce5",
+      "name": "replace_inf_values",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [],
+      "parameters": {}
+    },
+    {
+      "id": "3cc4d1b8",
+      "name": "post_replace_inf_values",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 742,
+        "columns": 22
+      }
+    },
+    {
+      "id": "5eb3695f",
+      "name": "create_model",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "2d4e3db9",
+      "name": "silicon_model.model",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": null
+    },
+    {
+      "id": "5fcc8936",
+      "name": "create_tuner",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "parameters": {
+        "silicon_model.tune.class_name": "modeling.SklearnPipelineTuner",
+        "silicon_model.tune.tuner": {
+          "class_name": "sklearn.model_selection.GridSearchCV",
+          "kwargs": {
+            "n_jobs": -1,
+            "refit": "mae",
+            "param_grid": {
+              "estimator__alpha": [
+                0.0001,
+                0.001,
+                0.01,
+                0.1,
+                1,
+                10
+              ],
+              "estimator__l1_ratio": [
+                0.00001,
+                0.0001,
+                0.001,
+                0.01,
+                0.1,
+                1
+              ]
+            },
+            "scoring": {
+              "mae": "neg_mean_absolute_error",
+              "rmse": "neg_root_mean_squared_error",
+              "r2": "r2"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "46d90571",
+      "name": "params:silicon_model.tune.class_name",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "silicon_model",
+        "silicon_model.tune"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "4284726a",
+      "name": "params:silicon_model.tune.tuner",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "silicon_model",
+        "silicon_model.tune"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "7c85b509",
+      "name": "silicon_model.model_tuner",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": null
+    },
+    {
+      "id": "23bc7108",
+      "name": "remove_null_columns",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [],
+      "parameters": {}
+    },
+    {
+      "id": "b0672277",
+      "name": "post_remove_null_columns",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 742,
+        "columns": 22
+      }
+    },
+    {
+      "id": "d6754625",
+      "name": "unify_timestamp_col_name",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [],
+      "parameters": {
+        "cleaning.datetime_col": "TIME_STAMP",
+        "cleaning.unitifed_timestamp": "timestamp"
+      }
+    },
+    {
+      "id": "8e237bfd",
+      "name": "params:cleaning.datetime_col",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "cleaning"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "f21bdec0",
+      "name": "params:cleaning.unitifed_timestamp",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "cleaning"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "c6778101",
+      "name": "post_unify_timestamp_col_name",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 742,
+        "columns": 22
+      }
+    },
+    {
+      "id": "178f5685",
+      "name": "round_timestamps",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [],
+      "parameters": {
+        "cleaning.round_timestamps.frequency": "1h",
+        "cleaning.unitifed_timestamp": "timestamp"
+      }
+    },
+    {
+      "id": "58f214a4",
+      "name": "params:cleaning.round_timestamps.frequency",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "cleaning",
+        "cleaning.round_timestamps"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "f53b3f31",
+      "name": "post_round_timestamps",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 742,
+        "columns": 22
+      }
+    },
+    {
+      "id": "563532ce",
+      "name": "deduplicate_pandas",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [],
+      "parameters": {}
+    },
+    {
+      "id": "0fae0b32",
+      "name": "post_deduplicate_pandas",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 601,
+        "columns": 22
+      }
+    },
+    {
+      "id": "65cada17",
+      "name": "enforce_schema",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [],
+      "parameters": {}
+    },
+    {
+      "id": "a7558cc9",
+      "name": "tags_meta_config",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "kedro_utils.tag_config_dataset.TagsConfigCSVDataset",
+      "stats": null
+    },
+    {
+      "id": "13f8f94b",
+      "name": "post_enforce_schema",
+      "tags": [
+        "preprocessing",
+        "recent_live_data"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 601,
+        "columns": 22
+      }
+    },
+    {
+      "id": "658fdd62",
+      "name": "remove_outlier",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [],
+      "parameters": {
+        "cleaning.outliers_rule": "drop"
+      }
+    },
+    {
+      "id": "38710ef0",
+      "name": "tags_outliers_config",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "kedro_utils.tag_config_dataset.TagsConfigCSVDataset",
+      "stats": null
+    },
+    {
+      "id": "ff778e72",
+      "name": "params:cleaning.outliers_rule",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "cleaning"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "25805e90",
+      "name": "post_remove_outlier",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 601,
+        "columns": 22
+      }
+    },
+    {
+      "id": "f279c427",
+      "name": "outlier_summary",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "pandas.csv_dataset.CSVDataset",
+      "stats": {
+        "rows": 16,
+        "columns": 2,
+        "file_size": 295
+      }
+    },
+    {
+      "id": "7330a6e1",
+      "name": "interpolate_cols",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [],
+      "parameters": {
+        "cleaning.interpolate_kwargs": {
+          "limit": 5
+        }
+      }
+    },
+    {
+      "id": "376fc6d9",
+      "name": "tags_impute_config",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "kedro_utils.tag_config_dataset.TagsConfigCSVDataset",
+      "stats": null
+    },
+    {
+      "id": "8de4c49e",
+      "name": "params:cleaning.interpolate_kwargs",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "cleaning"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "900c126e",
+      "name": "post_interpolate_cols",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 601,
+        "columns": 22
+      }
+    },
+    {
+      "id": "ee1a5e9e",
+      "name": "interpolate_summary",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 21,
+        "columns": 4
+      }
+    },
+    {
+      "id": "58179235",
+      "name": "preprocessing_summary",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [],
+      "parameters": {}
+    },
+    {
+      "id": "74defc9a",
+      "name": "tags_on_off_config",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "kedro_utils.tag_config_dataset.TagsConfigCSVDataset",
+      "stats": null
+    },
+    {
+      "id": "8275bd65",
+      "name": "tags_resample_config",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "kedro_utils.tag_config_dataset.TagsConfigCSVDataset",
+      "stats": null
+    },
+    {
+      "id": "1c171528",
+      "name": "tag_config_summary",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": "primary",
+      "dataset_type": "pandas.csv_dataset.CSVDataset",
+      "stats": {
+        "rows": 22,
+        "columns": 23,
+        "file_size": 12288
+      }
+    },
+    {
+      "id": "12bbe483",
+      "name": "set_off_equipment_to_zero",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [],
+      "parameters": {}
+    },
+    {
+      "id": "03b8cfb2",
+      "name": "post_set_off_equipment_to_zero",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 601,
+        "columns": 22
+      }
+    },
+    {
+      "id": "e0463ad1",
+      "name": "resample_data",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [],
+      "parameters": {
+        "cleaning.unitifed_timestamp": "timestamp",
+        "cleaning.resample_errors": "coerce"
+      }
+    },
+    {
+      "id": "4dee7c8c",
+      "name": "params:cleaning.resample_errors",
+      "tags": [
+        "preprocessing"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "cleaning"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "4aa6555d",
+      "name": "preprocessed_data",
+      "tags": [
+        "preprocessing",
+        "feature_factory"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 127,
+        "columns": 22
+      }
+    },
+    {
+      "id": "a40083b8",
+      "name": "create_features",
+      "tags": [
+        "feature_factory"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [],
+      "parameters": {
+        "feature_factory": {
+          "total_k": {
+            "dependencies": [
+              "lower_k",
+              "middle_k",
+              "upper_k"
+            ],
+            "function": "feature_factory.sample_function.pandas_sum"
+          }
+        }
+      }
+    },
+    {
+      "id": "15043c27",
+      "name": "params:feature_factory",
+      "tags": [
+        "feature_factory"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "dc2bb6f9",
+      "name": "model_input_data",
+      "tags": [
+        "feature_report",
+        "feature_factory",
+        "modeling",
+        "recent_live_data"
+      ],
+      "pipelines": [
+        "feature_report",
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "pandas.parquet_dataset.ParquetDataset",
+      "stats": {
+        "rows": 127,
+        "columns": 23,
+        "file_size": 36825
+      }
+    },
+    {
+      "id": "9d91d628",
+      "name": "drop_nan_rows",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "parameters": {
+        "silicon_model.train.target_column": "silicon",
+        "silicon_model.train.model_features": [
+          "al2o3_slag",
+          "avg_uptake_press",
+          "c_2_hm",
+          "CAO_slag",
+          "coke_thickness_belly",
+          "ETA_CO",
+          "HBT",
+          "humidity",
+          "m_value",
+          "MGO_slag",
+          "total_k",
+          "PCI_KG_THM",
+          "pellet_percent",
+          "production_rate",
+          "sinter_percent",
+          "SIO2_slag",
+          "SLAG_VOL_KG_THM",
+          "dry_cokerate_pro"
+        ]
+      }
+    },
+    {
+      "id": "113897ef",
+      "name": "silicon_model.data_dropna",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 120,
+        "columns": 23
+      }
+    },
+    {
+      "id": "33e29de9",
+      "name": "split_data",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "64b583b0",
+      "name": "train_data",
+      "tags": [
+        "modeling",
+        "reporting"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 74,
+        "columns": 23
+      }
+    },
+    {
+      "id": "4f20c649",
+      "name": "test_data",
+      "tags": [
+        "recommend",
+        "live_prediction",
+        "recent_live_data",
+        "reporting",
+        "export",
+        "modeling"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 46,
+        "columns": 23
+      }
+    },
+    {
+      "id": "b7ecbf05",
+      "name": "tune_model",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "parameters": {
+        "silicon_model.tune.hyperparameters": null
+      }
+    },
+    {
+      "id": "1757e044",
+      "name": "params:silicon_model.tune.hyperparameters",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "silicon_model",
+        "silicon_model.tune"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "b618a6d1",
+      "name": "silicon_model.tuned_model",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": null
+    },
+    {
+      "id": "f2b0323c",
+      "name": "train_model",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "8c812b47",
+      "name": "trained_model",
+      "tags": [
+        "recommend",
+        "live_prediction",
+        "reporting",
+        "modeling"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "pickle.pickle_dataset.PickleDataset",
+      "stats": null
+    },
+    {
+      "id": "e0a47bad",
+      "name": "create_test_metrics",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "d407a8cf",
+      "name": "test_metrics",
+      "tags": [
+        "live_prediction",
+        "modeling"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "yaml.yaml_dataset.YAMLDataset",
+      "stats": null
+    },
+    {
+      "id": "94258e0d",
+      "name": "create_train_metrics",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "ef5f83a7",
+      "name": "train_metrics",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": null
+    },
+    {
+      "id": "591a0933",
+      "name": "cross_validate",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "parameters": {
+        "silicon_model.cross_validate.cv_strategy_config": {
+          "class_name": "sklearn.model_selection.TimeSeriesSplit",
+          "kwargs": {
+            "n_splits": 4
+          }
+        }
+      }
+    },
+    {
+      "id": "6f802e42",
+      "name": "params:silicon_model.cross_validate.cv_strategy_config",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "silicon_model",
+        "silicon_model.cross_validate"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "0a548b92",
+      "name": "cross_validation_scores",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "pandas.excel_dataset.ExcelDataset",
+      "stats": {
+        "rows": 4,
+        "columns": 12,
+        "file_size": 5384
+      }
+    },
+    {
+      "id": "d4328b40",
+      "name": "feature_importance",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "c9be0b1f",
+      "name": "feature_importance",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 18,
+        "columns": 1
+      }
+    },
+    {
+      "id": "add53af0",
+      "name": "generate_performance_figures",
+      "tags": [
+        "modeling",
+        "reporting"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "parameters": {
+        "silicon_model.split.split_parameters.datetime_column": "timestamp"
+      }
+    },
+    {
+      "id": "18c661db",
+      "name": "params:silicon_model.split.split_parameters.datetime_column",
+      "tags": [
+        "modeling",
+        "reporting"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "silicon_model",
+        "silicon_model.split",
+        "silicon_model.split.split_parameters"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "0cfd415a",
+      "name": "silicon_model.model_performance_report",
+      "tags": [
+        "modeling",
+        "reporting"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": null
+    },
+    {
+      "id": "ea7acb85",
+      "name": "shap_feature_importance",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "af7889a5",
+      "name": "shap_feature_importance",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 18,
+        "columns": 1
+      }
+    },
+    {
+      "id": "d48acfcb",
+      "name": "test_data_with_predictions",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "parameters": {
+        "silicon_model.train.target_column": "silicon"
+      }
+    },
+    {
+      "id": "3432870e",
+      "name": "test_data_with_predictions",
+      "tags": [
+        "live_prediction",
+        "modeling"
+      ],
+      "pipelines": [
+        "live_inference",
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 46,
+        "columns": 25
+      }
+    },
+    {
+      "id": "853fcca2",
+      "name": "train_data_with_predictions",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "parameters": {
+        "silicon_model.train.target_column": "silicon"
+      }
+    },
+    {
+      "id": "636493b3",
+      "name": "train_data_with_predictions",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": {
+        "rows": 74,
+        "columns": 25
+      }
+    },
+    {
+      "id": "8e5fcb63",
+      "name": "convert_metrics_to_nested_mlflow_dict",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "bae304a8",
+      "name": "test_metrics_for_mlflow",
+      "tags": [
+        "modeling"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "data",
+      "modular_pipelines": [],
+      "layer": null,
+      "dataset_type": "io.memory_dataset.MemoryDataset",
+      "stats": null
+    },
+    {
+      "id": "89503053",
+      "name": "generate_model_performance_report",
+      "tags": [
+        "modeling",
+        "reporting"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "task",
+      "modular_pipelines": [
+        "silicon_model"
+      ],
+      "parameters": {
+        "silicon_model.model_performance_report.render_path": "data/08_reporting/model_performance_report.html",
+        "silicon_model.model_performance_report.report_meta_data": {
+          "title": "Silicon Model Performance Report"
+        }
+      }
+    },
+    {
+      "id": "a9c95bf5",
+      "name": "params:silicon_model.model_performance_report.render_path",
+      "tags": [
+        "modeling",
+        "reporting"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "silicon_model",
+        "silicon_model.model_performance_report"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "1f3c835c",
+      "name": "params:silicon_model.model_performance_report.report_meta_data",
+      "tags": [
+        "modeling",
+        "reporting"
+      ],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "parameters",
+      "modular_pipelines": [
+        "silicon_model",
+        "silicon_model.model_performance_report"
+      ],
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    },
+    {
+      "id": "silicon_model",
+      "name": "silicon_model",
+      "tags": [],
+      "pipelines": [
+        "__default__"
+      ],
+      "type": "modularPipeline",
+      "modular_pipelines": null,
+      "layer": null,
+      "dataset_type": null,
+      "stats": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "0a71ce3e",
+      "target": "silicon_model"
+    },
+    {
+      "source": "9d91d628",
+      "target": "113897ef"
+    },
+    {
+      "source": "f21bdec0",
+      "target": "e0463ad1"
+    },
+    {
+      "source": "silicon_model",
+      "target": "0a548b92"
+    },
+    {
+      "source": "silicon_model",
+      "target": "636493b3"
+    },
+    {
+      "source": "silicon_model",
+      "target": "64b583b0"
+    },
+    {
+      "source": "46d90571",
+      "target": "silicon_model"
+    },
+    {
+      "source": "12bbe483",
+      "target": "03b8cfb2"
+    },
+    {
+      "source": "c6d67de3",
+      "target": "33e29de9"
+    },
+    {
+      "source": "silicon_model",
+      "target": "d407a8cf"
+    },
+    {
+      "source": "7330a6e1",
+      "target": "900c126e"
+    },
+    {
+      "source": "1757e044",
+      "target": "b7ecbf05"
+    },
+    {
+      "source": "add53af0",
+      "target": "0cfd415a"
+    },
+    {
+      "source": "4f20c649",
+      "target": "e0a47bad"
+    },
+    {
+      "source": "8c812b47",
+      "target": "d4328b40"
+    },
+    {
+      "source": "e0463ad1",
+      "target": "4aa6555d"
+    },
+    {
+      "source": "64b583b0",
+      "target": "94258e0d"
+    },
+    {
+      "source": "1f3c835c",
+      "target": "silicon_model"
+    },
+    {
+      "source": "8275bd65",
+      "target": "e0463ad1"
+    },
+    {
+      "source": "8c812b47",
+      "target": "e0a47bad"
+    },
+    {
+      "source": "ea7acb85",
+      "target": "af7889a5"
+    },
+    {
+      "source": "a8bcf880",
+      "target": "315a31d4"
+    },
+    {
+      "source": "e0a47bad",
+      "target": "d407a8cf"
+    },
+    {
+      "source": "silicon_model",
+      "target": "2d4e3db9"
+    },
+    {
+      "source": "a8bcf880",
+      "target": "silicon_model"
+    },
+    {
+      "source": "74defc9a",
+      "target": "12bbe483"
+    },
+    {
+      "source": "silicon_model",
+      "target": "bae304a8"
+    },
+    {
+      "source": "65cada17",
+      "target": "13f8f94b"
+    },
+    {
+      "source": "a7558cc9",
+      "target": "12bbe483"
+    },
+    {
+      "source": "c219a063",
+      "target": "5fcc8936"
+    },
+    {
+      "source": "64b583b0",
+      "target": "b7ecbf05"
+    },
+    {
+      "source": "1f3c835c",
+      "target": "89503053"
+    },
+    {
+      "source": "81d1b266",
+      "target": "c6d67de3"
+    },
+    {
+      "source": "591a0933",
+      "target": "0a548b92"
+    },
+    {
+      "source": "8c812b47",
+      "target": "d48acfcb"
+    },
+    {
+      "source": "d48acfcb",
+      "target": "3432870e"
+    },
+    {
+      "source": "13f8f94b",
+      "target": "658fdd62"
+    },
+    {
+      "source": "c4705528",
+      "target": "9d91d628"
+    },
+    {
+      "source": "0cfd415a",
+      "target": "89503053"
+    },
+    {
+      "source": "68cfaffc",
+      "target": "silicon_model"
+    },
+    {
+      "source": "f2b0323c",
+      "target": "8c812b47"
+    },
+    {
+      "source": "900c126e",
+      "target": "12bbe483"
+    },
+    {
+      "source": "376fc6d9",
+      "target": "7330a6e1"
+    },
+    {
+      "source": "58179235",
+      "target": "1c171528"
+    },
+    {
+      "source": "32d88557",
+      "target": "d48acfcb"
+    },
+    {
+      "source": "b0672277",
+      "target": "d6754625"
+    },
+    {
+      "source": "32bf0384",
+      "target": "e60d6d0c"
+    },
+    {
+      "source": "a7558cc9",
+      "target": "65cada17"
+    },
+    {
+      "source": "ff778e72",
+      "target": "658fdd62"
+    },
+    {
+      "source": "32d88557",
+      "target": "9d91d628"
+    },
+    {
+      "source": "8c812b47",
+      "target": "853fcca2"
+    },
+    {
+      "source": "6f802e42",
+      "target": "silicon_model"
+    },
+    {
+      "source": "74defc9a",
+      "target": "58179235"
+    },
+    {
+      "source": "7c85b509",
+      "target": "b7ecbf05"
+    },
+    {
+      "source": "563532ce",
+      "target": "0fae0b32"
+    },
+    {
+      "source": "853fcca2",
+      "target": "636493b3"
+    },
+    {
+      "source": "32d88557",
+      "target": "853fcca2"
+    },
+    {
+      "source": "64b583b0",
+      "target": "d4328b40"
+    },
+    {
+      "source": "33e29de9",
+      "target": "64b583b0"
+    },
+    {
+      "source": "8c812b47",
+      "target": "ea7acb85"
+    },
+    {
+      "source": "0fae0b32",
+      "target": "65cada17"
+    },
+    {
+      "source": "4dee7c8c",
+      "target": "e0463ad1"
+    },
+    {
+      "source": "dc2bb6f9",
+      "target": "silicon_model"
+    },
+    {
+      "source": "4284726a",
+      "target": "5fcc8936"
+    },
+    {
+      "source": "d4328b40",
+      "target": "c9be0b1f"
+    },
+    {
+      "source": "ee1a5e9e",
+      "target": "58179235"
+    },
+    {
+      "source": "03b8cfb2",
+      "target": "e0463ad1"
+    },
+    {
+      "source": "4aa6555d",
+      "target": "a40083b8"
+    },
+    {
+      "source": "33e29de9",
+      "target": "4f20c649"
+    },
+    {
+      "source": "b618a6d1",
+      "target": "f2b0323c"
+    },
+    {
+      "source": "c4705528",
+      "target": "silicon_model"
+    },
+    {
+      "source": "a9c95bf5",
+      "target": "silicon_model"
+    },
+    {
+      "source": "6c1f7ff8",
+      "target": "e60d6d0c"
+    },
+    {
+      "source": "4f20c649",
+      "target": "d48acfcb"
+    },
+    {
+      "source": "bf95147a",
+      "target": "315a31d4"
+    },
+    {
+      "source": "0a71ce3e",
+      "target": "81d1b266"
+    },
+    {
+      "source": "8c812b47",
+      "target": "add53af0"
+    },
+    {
+      "source": "178f5685",
+      "target": "f53b3f31"
+    },
+    {
+      "source": "bf95147a",
+      "target": "silicon_model"
+    },
+    {
+      "source": "32d88557",
+      "target": "silicon_model"
+    },
+    {
+      "source": "315a31d4",
+      "target": "c219a063"
+    },
+    {
+      "source": "d407a8cf",
+      "target": "8e5fcb63"
+    },
+    {
+      "source": "f53b3f31",
+      "target": "563532ce"
+    },
+    {
+      "source": "6f802e42",
+      "target": "591a0933"
+    },
+    {
+      "source": "658fdd62",
+      "target": "25805e90"
+    },
+    {
+      "source": "silicon_model",
+      "target": "3432870e"
+    },
+    {
+      "source": "a9c95bf5",
+      "target": "89503053"
+    },
+    {
+      "source": "376fc6d9",
+      "target": "58179235"
+    },
+    {
+      "source": "b7ecbf05",
+      "target": "b618a6d1"
+    },
+    {
+      "source": "23bc7108",
+      "target": "b0672277"
+    },
+    {
+      "source": "64b583b0",
+      "target": "853fcca2"
+    },
+    {
+      "source": "38710ef0",
+      "target": "58179235"
+    },
+    {
+      "source": "a7558cc9",
+      "target": "58179235"
+    },
+    {
+      "source": "46d90571",
+      "target": "5fcc8936"
+    },
+    {
+      "source": "1757e044",
+      "target": "silicon_model"
+    },
+    {
+      "source": "5fcc8936",
+      "target": "7c85b509"
+    },
+    {
+      "source": "7330a6e1",
+      "target": "ee1a5e9e"
+    },
+    {
+      "source": "8e5fcb63",
+      "target": "bae304a8"
+    },
+    {
+      "source": "silicon_model",
+      "target": "af7889a5"
+    },
+    {
+      "source": "8e237bfd",
+      "target": "d6754625"
+    },
+    {
+      "source": "c219a063",
+      "target": "5eb3695f"
+    },
+    {
+      "source": "silicon_model",
+      "target": "8c812b47"
+    },
+    {
+      "source": "64b583b0",
+      "target": "ea7acb85"
+    },
+    {
+      "source": "c4705528",
+      "target": "315a31d4"
+    },
+    {
+      "source": "8c812b47",
+      "target": "591a0933"
+    },
+    {
+      "source": "d6754625",
+      "target": "c6778101"
+    },
+    {
+      "source": "18c661db",
+      "target": "silicon_model"
+    },
+    {
+      "source": "4f20c649",
+      "target": "add53af0"
+    },
+    {
+      "source": "18c661db",
+      "target": "add53af0"
+    },
+    {
+      "source": "58f214a4",
+      "target": "178f5685"
+    },
+    {
+      "source": "25805e90",
+      "target": "7330a6e1"
+    },
+    {
+      "source": "32d88557",
+      "target": "315a31d4"
+    },
+    {
+      "source": "8c812b47",
+      "target": "94258e0d"
+    },
+    {
+      "source": "4284726a",
+      "target": "silicon_model"
+    },
+    {
+      "source": "silicon_model",
+      "target": "ef5f83a7"
+    },
+    {
+      "source": "silicon_model",
+      "target": "c9be0b1f"
+    },
+    {
+      "source": "5eb3695f",
+      "target": "2d4e3db9"
+    },
+    {
+      "source": "3cc4d1b8",
+      "target": "23bc7108"
+    },
+    {
+      "source": "94258e0d",
+      "target": "ef5f83a7"
+    },
+    {
+      "source": "113897ef",
+      "target": "591a0933"
+    },
+    {
+      "source": "silicon_model",
+      "target": "4f20c649"
+    },
+    {
+      "source": "f279c427",
+      "target": "58179235"
+    },
+    {
+      "source": "7b81dce5",
+      "target": "3cc4d1b8"
+    },
+    {
+      "source": "68cfaffc",
+      "target": "81d1b266"
+    },
+    {
+      "source": "64b583b0",
+      "target": "add53af0"
+    },
+    {
+      "source": "e60d6d0c",
+      "target": "12543cc9"
+    },
+    {
+      "source": "c6778101",
+      "target": "178f5685"
+    },
+    {
+      "source": "15043c27",
+      "target": "a40083b8"
+    },
+    {
+      "source": "6c1f7ff8",
+      "target": "58179235"
+    },
+    {
+      "source": "12543cc9",
+      "target": "7b81dce5"
+    },
+    {
+      "source": "a40083b8",
+      "target": "dc2bb6f9"
+    },
+    {
+      "source": "8de4c49e",
+      "target": "7330a6e1"
+    },
+    {
+      "source": "658fdd62",
+      "target": "f279c427"
+    },
+    {
+      "source": "64b583b0",
+      "target": "f2b0323c"
+    },
+    {
+      "source": "f21bdec0",
+      "target": "178f5685"
+    },
+    {
+      "source": "38710ef0",
+      "target": "658fdd62"
+    },
+    {
+      "source": "113897ef",
+      "target": "33e29de9"
+    },
+    {
+      "source": "dc2bb6f9",
+      "target": "9d91d628"
+    },
+    {
+      "source": "8275bd65",
+      "target": "58179235"
+    },
+    {
+      "source": "f21bdec0",
+      "target": "d6754625"
+    }
+  ],
+  "layers": [
+    "raw",
+    "primary"
+  ],
+  "tags": [
+    {
+      "id": "export",
+      "name": "export"
+    },
+    {
+      "id": "feature_factory",
+      "name": "feature_factory"
+    },
+    {
+      "id": "feature_report",
+      "name": "feature_report"
+    },
+    {
+      "id": "live_prediction",
+      "name": "live_prediction"
+    },
+    {
+      "id": "modeling",
+      "name": "modeling"
+    },
+    {
+      "id": "preprocessing",
+      "name": "preprocessing"
+    },
+    {
+      "id": "recent_live_data",
+      "name": "recent_live_data"
+    },
+    {
+      "id": "recommend",
+      "name": "recommend"
+    },
+    {
+      "id": "reporting",
+      "name": "reporting"
+    }
+  ],
+  "pipelines": [
+    {
+      "id": "__default__",
+      "name": "__default__"
+    },
+    {
+      "id": "live_inference",
+      "name": "live_inference"
+    },
+    {
+      "id": "feature_report",
+      "name": "feature_report"
+    }
+  ],
+  "modular_pipelines": {
+    "__root__": {
+      "id": "__root__",
+      "name": "__root__",
+      "inputs": [],
+      "outputs": [],
+      "children": [
+        {
+          "id": "bf95147a",
+          "type": "parameters"
+        },
+        {
+          "id": "32d88557",
+          "type": "parameters"
+        },
+        {
+          "id": "0fae0b32",
+          "type": "data"
+        },
+        {
+          "id": "1c171528",
+          "type": "data"
+        },
+        {
+          "id": "68cfaffc",
+          "type": "parameters"
+        },
+        {
+          "id": "58179235",
+          "type": "task"
+        },
+        {
+          "id": "636493b3",
+          "type": "data"
+        },
+        {
+          "id": "64b583b0",
+          "type": "data"
+        },
+        {
+          "id": "e60d6d0c",
+          "type": "task"
+        },
+        {
+          "id": "a40083b8",
+          "type": "task"
+        },
+        {
+          "id": "13f8f94b",
+          "type": "data"
+        },
+        {
+          "id": "d407a8cf",
+          "type": "data"
+        },
+        {
+          "id": "1f3c835c",
+          "type": "parameters"
+        },
+        {
+          "id": "12543cc9",
+          "type": "data"
+        },
+        {
+          "id": "178f5685",
+          "type": "task"
+        },
+        {
+          "id": "65cada17",
+          "type": "task"
+        },
+        {
+          "id": "4aa6555d",
+          "type": "data"
+        },
+        {
+          "id": "563532ce",
+          "type": "task"
+        },
+        {
+          "id": "900c126e",
+          "type": "data"
+        },
+        {
+          "id": "c6778101",
+          "type": "data"
+        },
+        {
+          "id": "silicon_model",
+          "type": "modularPipeline"
+        },
+        {
+          "id": "6f802e42",
+          "type": "parameters"
+        },
+        {
+          "id": "bae304a8",
+          "type": "data"
+        },
+        {
+          "id": "23bc7108",
+          "type": "task"
+        },
+        {
+          "id": "af7889a5",
+          "type": "data"
+        },
+        {
+          "id": "3cc4d1b8",
+          "type": "data"
+        },
+        {
+          "id": "f279c427",
+          "type": "data"
+        },
+        {
+          "id": "c9be0b1f",
+          "type": "data"
+        },
+        {
+          "id": "03b8cfb2",
+          "type": "data"
+        },
+        {
+          "id": "25805e90",
+          "type": "data"
+        },
+        {
+          "id": "a8bcf880",
+          "type": "parameters"
+        },
+        {
+          "id": "e0463ad1",
+          "type": "task"
+        },
+        {
+          "id": "d6754625",
+          "type": "task"
+        },
+        {
+          "id": "1757e044",
+          "type": "parameters"
+        },
+        {
+          "id": "0a548b92",
+          "type": "data"
+        },
+        {
+          "id": "6c1f7ff8",
+          "type": "data"
+        },
+        {
+          "id": "658fdd62",
+          "type": "task"
+        },
+        {
+          "id": "7b81dce5",
+          "type": "task"
+        },
+        {
+          "id": "dc2bb6f9",
+          "type": "data"
+        },
+        {
+          "id": "ef5f83a7",
+          "type": "data"
+        },
+        {
+          "id": "376fc6d9",
+          "type": "data"
+        },
+        {
+          "id": "f53b3f31",
+          "type": "data"
+        },
+        {
+          "id": "74defc9a",
+          "type": "data"
+        },
+        {
+          "id": "3432870e",
+          "type": "data"
+        },
+        {
+          "id": "15043c27",
+          "type": "parameters"
+        },
+        {
+          "id": "7330a6e1",
+          "type": "task"
+        },
+        {
+          "id": "38710ef0",
+          "type": "data"
+        },
+        {
+          "id": "a7558cc9",
+          "type": "data"
+        },
+        {
+          "id": "c4705528",
+          "type": "parameters"
+        },
+        {
+          "id": "0a71ce3e",
+          "type": "parameters"
+        },
+        {
+          "id": "18c661db",
+          "type": "parameters"
+        },
+        {
+          "id": "4f20c649",
+          "type": "data"
+        },
+        {
+          "id": "a9c95bf5",
+          "type": "parameters"
+        },
+        {
+          "id": "46d90571",
+          "type": "parameters"
+        },
+        {
+          "id": "32bf0384",
+          "type": "data"
+        },
+        {
+          "id": "8c812b47",
+          "type": "data"
+        },
+        {
+          "id": "b0672277",
+          "type": "data"
+        },
+        {
+          "id": "12bbe483",
+          "type": "task"
+        },
+        {
+          "id": "ee1a5e9e",
+          "type": "data"
+        },
+        {
+          "id": "8275bd65",
+          "type": "data"
+        },
+        {
+          "id": "4284726a",
+          "type": "parameters"
+        }
+      ]
+    },
+    "silicon_model": {
+      "id": "silicon_model",
+      "name": "silicon_model",
+      "inputs": [
+        "68cfaffc",
+        "a8bcf880",
+        "a9c95bf5",
+        "bf95147a",
+        "6f802e42",
+        "32d88557",
+        "64b583b0",
+        "46d90571",
+        "d407a8cf",
+        "8c812b47",
+        "18c661db",
+        "dc2bb6f9",
+        "0a71ce3e",
+        "1757e044",
+        "4f20c649",
+        "c4705528",
+        "1f3c835c",
+        "4284726a"
+      ],
+      "outputs": [
+        "2d4e3db9",
+        "ef5f83a7",
+        "bae304a8",
+        "af7889a5",
+        "c9be0b1f",
+        "636493b3",
+        "64b583b0",
+        "d407a8cf",
+        "8c812b47",
+        "3432870e",
+        "0a548b92",
+        "4f20c649"
+      ],
+      "children": [
+        {
+          "id": "add53af0",
+          "type": "task"
+        },
+        {
+          "id": "94258e0d",
+          "type": "task"
+        },
+        {
+          "id": "c219a063",
+          "type": "data"
+        },
+        {
+          "id": "591a0933",
+          "type": "task"
+        },
+        {
+          "id": "b7ecbf05",
+          "type": "task"
+        },
+        {
+          "id": "8e5fcb63",
+          "type": "task"
+        },
+        {
+          "id": "113897ef",
+          "type": "data"
+        },
+        {
+          "id": "f2b0323c",
+          "type": "task"
+        },
+        {
+          "id": "315a31d4",
+          "type": "task"
+        },
+        {
+          "id": "b618a6d1",
+          "type": "data"
+        },
+        {
+          "id": "e0a47bad",
+          "type": "task"
+        },
+        {
+          "id": "81d1b266",
+          "type": "task"
+        },
+        {
+          "id": "853fcca2",
+          "type": "task"
+        },
+        {
+          "id": "0cfd415a",
+          "type": "data"
+        },
+        {
+          "id": "9d91d628",
+          "type": "task"
+        },
+        {
+          "id": "2d4e3db9",
+          "type": "data"
+        },
+        {
+          "id": "33e29de9",
+          "type": "task"
+        },
+        {
+          "id": "c6d67de3",
+          "type": "data"
+        },
+        {
+          "id": "5eb3695f",
+          "type": "task"
+        },
+        {
+          "id": "d4328b40",
+          "type": "task"
+        },
+        {
+          "id": "ea7acb85",
+          "type": "task"
+        },
+        {
+          "id": "89503053",
+          "type": "task"
+        },
+        {
+          "id": "d48acfcb",
+          "type": "task"
+        },
+        {
+          "id": "7c85b509",
+          "type": "data"
+        },
+        {
+          "id": "5fcc8936",
+          "type": "task"
+        }
+      ]
+    }
+  },
+  "selected_pipeline": "__default__"
+}

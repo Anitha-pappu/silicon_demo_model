@@ -1,0 +1,12 @@
+{
+  "code": "                func=lambda data: data.iloc[-100:].set_index(\"timestamp\"),\n",
+  "filepath": "demo_model\\src\\set_point_optimization_kedro\\pipelines\\live_predictions.py",
+  "parameters": {},
+  "run_command": null,
+  "inputs": [
+    "post_enforce_schema"
+  ],
+  "outputs": [
+    "live_monitoring_data"
+  ]
+}

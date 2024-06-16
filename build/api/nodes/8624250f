@@ -1,0 +1,17 @@
+{
+  "code": "def optimize(\n    data_to_optimize: pd.DataFrame,\n    problem_factory: ProblemFactoryBase[TProblem],\n    solver_factory: SolverFactory,\n    loggers: tp.Optional[tp.List[LoggerMixin]] = None,\n    *,\n    n_jobs: float = 1,\n    warnings_details_level: TWarningsLevelExtended = \"aggregated\",\n) -> Solutions:\n    \"\"\"\n    Run parallel optimization for multiple rows of data.\n\n    Args:\n        data_to_optimize: dataset to optimize;\n            rows are optimized independently; each row is considered to contain\n            a full state of all plant conditions for a given moment of time\n        problem_factory: factory producing problems for each row of ``data``\n        solver_factory: factory producing solvers for each row of ``data``\n        loggers: list of loggers to trigger on each iteration of ask-tell loop of\n            optimization; those loggers will be used as prototypes\n            i.e., we'll create new logger via `.clone()`\n            for each row in ``data_to_optimize``;\n            per each solution its own ``loggers`` list will be returned\n        n_jobs: the number of cores used for parallel processing\n        warnings_details_level: controls warnings' level of verbosity;\n            \"none\" – don't show any warnings,\n            \"row_aggregated\" - show per row aggregated warnings,\n            \"aggregated\" - show overall aggregated warnings,\n            \"detailed\" – show detailed warnings\n\n    Raises:\n        DuplicateIndex: if input data contains duplicated index.\n\n    Returns:\n        Solutions, a mapping from ``data.index`` into ``Solution`` object\n    \"\"\"\n    if data_to_optimize.index.has_duplicates:\n        raise DuplicateIndexError(\"`data_to_optimize` must have unique index.\")\n\n    per_artefact_warning_level = get_per_artefact_warning_level(warnings_details_level)\n    with OutOfDomainCatcher(warnings_details_level, len(data_to_optimize)):\n        solution_artefacts = _prepare_solution_artefacts(\n            data_to_optimize,\n            problem_factory,\n            solver_factory,\n            loggers,  # type: ignore\n            per_artefact_warning_level,\n        )\n    backup_problems = [problem for problem, _, _, _ in solution_artefacts]\n\n    # since Parallel doesn't mutate initial objects with some backends,\n    # we'll re-collect updated objects\n    solution_artefacts = Parallel(n_jobs=n_jobs, verbose=10)(\n        delayed(_solve_problem)(*artefacts) for artefacts in solution_artefacts\n    )\n    solution_artefacts = _optimize_artifacts_memory_consumption(\n        backup_problems, solution_artefacts,\n    )\n    return Solutions(Solution(*artefacts) for artefacts in solution_artefacts)\n",
+  "filepath": "demo_model\\src\\recommend\\optimize\\_optimize.py",
+  "parameters": {
+    "recommend.optimize.n_jobs": 1
+  },
+  "run_command": "kedro run --to-nodes=optimize",
+  "inputs": [
+    "test_data",
+    "problem_factory",
+    "solver_factory",
+    "params:recommend.optimize.n_jobs"
+  ],
+  "outputs": [
+    "solutions"
+  ]
+}

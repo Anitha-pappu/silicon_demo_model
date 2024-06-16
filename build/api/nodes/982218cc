@@ -1,0 +1,17 @@
+{
+  "code": "def calculate_implementation_status(\n    implementation_data: pd.DataFrame,\n    method: tp.Literal[\"deviation\", \"progress\"] | TMethod,\n    **kwargs: tp.Any,\n) -> pd.DataFrame:\n    \"\"\"\n    Calculates the implementation percentage (between 0 and 100) for each recommendation\n    and run id based on the method selected.\n\n    Args:\n        implementation_data: Data ready for implementation status calculations.\n        method: Method to use for implementation status calculations. It can be a name\n            that maps to a function through ``IMPLEMENTATION_STATUS_METHODS``. It can\n            also be a function with ``TMethod```signature\n        **kwargs: Additional kwargs that are passed to ``method``.\n\n    Returns:\n        Implementation status per feature and run.\n    \"\"\"\n    supported_methods = \", \".join(IMPLEMENTATION_STATUS_METHODS.keys())\n    if isinstance(method, str):\n        if method not in IMPLEMENTATION_STATUS_METHODS:\n            raise ValueError(\n                f\"Provided implementation status method {method} is not supported:\"\n                f\" supported methods are {supported_methods}\",\n            )\n        implementation_func = IMPLEMENTATION_STATUS_METHODS[method]\n        return implementation_func(implementation_data, **kwargs)\n\n    elif callable(method):\n        return method(implementation_data, **kwargs)\n\n    raise ValueError(\n        f\"Method must be {supported_methods} or a function that satisfies\"\n        \" ``TMethod`` protocol.\",\n    )\n",
+  "filepath": "demo_model\\src\\recommend\\implementation_tracker\\_implementation_calculation.py",
+  "parameters": {
+    "recommend.imp_tracking.method": "progress",
+    "recommend.imp_tracking.imp_tracking_params.clip": false
+  },
+  "run_command": null,
+  "inputs": [
+    "implementation_input",
+    "params:recommend.imp_tracking.method",
+    "params:recommend.imp_tracking.imp_tracking_params.clip"
+  ],
+  "outputs": [
+    "implementation_status"
+  ]
+}

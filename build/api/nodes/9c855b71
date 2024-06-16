@@ -1,0 +1,15 @@
+{
+  "code": "def check_uplift_stat_significance(\n    uplift: BaselineUplifts,\n    alternative_hypothesis: tp.Literal[\"two-sided\", \"less\", \"greater\"] = \"greater\",\n    forced_method: tp.Optional[tp.Literal[\"t-test\", \"bootstrap\"]] = None,\n    bootstrap_samples: int = 1000,\n    pop_mean: float = 0,\n) -> pd.DataFrame:\n    \"\"\"\n    Check the statistical significance of uplift by comparing the sample mean against\n    zero using a T-test or bootstrapping. If uplift has more than 30 observations or can\n    be proved to be normal, a T-test is used. Otherwise, bootstrapping is used.\n\n    This test will conclude average uplift behavior. For example, if we test the\n    \"greater\" hypothesis and the result is statistically significant, we conclude that\n    on average, produced uplift is positive.\n\n    Args:\n        uplift: Uplifts to check statistical significance for.\n        alternative_hypothesis: Alternative hypothesis for the test.\n        forced_method: If not None, the indicated method will be used to test\n            statistical significance.\n        bootstrap_samples: Number of samples to draw from the uplifts.\n        pop_mean: Mean of the population under the null hypothesis.\n\n    Returns:\n        P-value of the test for all data and by group.\n\n    \"\"\"\n    uplift_data = drop_uplifts_na_values(uplift.data)\n    method = select_method(uplift_data, forced_method)\n\n    p_values = pd.DataFrame(\n        {\n            \"group\": uplift.group_names,\n            \"p_value\": np.nan,\n        },\n    )\n    for group, uplift_group in uplift.group_iterator(dropna=True):\n        if method == \"t-test\":\n            p_values.loc[p_values[\"group\"] == group, \"p_value\"] = (\n                _run_t_test_mean_no_zero(uplift_group, alternative_hypothesis, pop_mean)\n            )\n        elif method == \"bootstrap\":\n            p_values.loc[p_values[\"group\"] == group, \"p_value\"] = (\n                _run_boostrap_mean_no_zero(\n                    uplift_group, alternative_hypothesis, pop_mean, bootstrap_samples,\n                )\n            )\n\n    return p_values\n",
+  "filepath": "optimus_set_point_optimization_kedro_app-0.21.0\\src\\recommend\\uplift\\statistical_significance\\uplift_significance.py",
+  "parameters": {
+    "impact.uplifts_alt": "less"
+  },
+  "run_command": "kedro run --to-nodes=check_uplift_significance",
+  "inputs": [
+    "uplifts",
+    "params:impact.uplifts_alt"
+  ],
+  "outputs": [
+    "sig_uplift"
+  ]
+}

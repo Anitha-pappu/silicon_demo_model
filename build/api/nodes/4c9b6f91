@@ -1,0 +1,16 @@
+{
+  "code": null,
+  "filepath": null,
+  "parameters": {
+    "baseline_model.train.target_column": "silica_conc"
+  },
+  "run_command": "kedro run --to-nodes=baseline_model.test_data_with_predictions",
+  "inputs": [
+    "baseline_test_data",
+    "baseline_trained_model",
+    "params:baseline_model.train.target_column"
+  ],
+  "outputs": [
+    "baseline_test_data_with_baseline_predictions"
+  ]
+}

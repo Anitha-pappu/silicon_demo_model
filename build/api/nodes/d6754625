@@ -1,0 +1,17 @@
+{
+  "code": "def unify_timestamp_col_name(\n    data: pd.DataFrame,\n    datetime_col: str,\n    unified_name: str = \"timestamp\",\n) -> pd.DataFrame:\n    \"\"\"Unify all timestamp column names that will be further used as index\n\n    Args:\n       data: input data\n       datetime_col: column name of timestamp\n       unified_name: desired unified column name\n\n    Returns:\n       data\n    \"\"\"\n\n    # check if a duplicate unified_name will be created\n    # raise an error if so\n    if (unified_name in data.columns) and (unified_name != datetime_col):\n        raise ValueError(\n            f\"column name '{unified_name}' already exists. \"\n            f\"Renaming another column to '{unified_name}' \"\n            f\"will lead to duplicate column names\",\n        )\n\n    df = data.rename(columns={datetime_col: unified_name})\n    logger.info(f\"Rename column '{datetime_col}' to '{unified_name}'.\")\n\n    return df\n",
+  "filepath": "demo_model\\src\\preprocessing\\cleaning.py",
+  "parameters": {
+    "cleaning.datetime_col": "TIME_STAMP",
+    "cleaning.unitifed_timestamp": "timestamp"
+  },
+  "run_command": "kedro run --to-nodes=unify_timestamp_col_name",
+  "inputs": [
+    "post_remove_null_columns",
+    "params:cleaning.datetime_col",
+    "params:cleaning.unitifed_timestamp"
+  ],
+  "outputs": [
+    "post_unify_timestamp_col_name"
+  ]
+}

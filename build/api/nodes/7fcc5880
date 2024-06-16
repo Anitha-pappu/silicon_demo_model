@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "silica_model.tune.class_name": "modeling.SklearnPipelineTuner"
+  }
+}

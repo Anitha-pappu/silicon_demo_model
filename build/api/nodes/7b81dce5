@@ -1,0 +1,12 @@
+{
+  "code": "def replace_inf_values(data: pd.DataFrame) -> pd.DataFrame:\n    \"\"\"Replace any infinite values in dataset with NaN.\n\n    Args:\n        data: input data\n\n    Returns:\n        Dataframe with infinite values replaced by NaN & dropped only if explicitly\n        asked to drop those\n    \"\"\"\n    df_new = data.copy()\n    infinity_set = [np.inf, -np.inf]\n    df_new = df_new.replace(infinity_set, np.nan)\n    summary = pd.DataFrame()\n    summary[\"before_cleaning\"] = data.isin(infinity_set).sum()\n    summary[\"after_cleaning\"] = df_new.isin(infinity_set).sum()\n\n    summary_count = summary.loc[summary[\"before_cleaning\"] > 0]\n\n    logger.info(f\"\\nnumber of inf values in data: \\n{summary_count}\")\n\n    return df_new\n",
+  "filepath": "demo_model\\src\\preprocessing\\cleaning.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes=replace_inf_values",
+  "inputs": [
+    "renamed_input_data"
+  ],
+  "outputs": [
+    "post_replace_inf_values"
+  ]
+}

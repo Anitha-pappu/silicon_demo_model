@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "silicon_model.train.target_column": "silicon"
+  }
+}

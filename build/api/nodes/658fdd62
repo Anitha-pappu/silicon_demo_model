@@ -1,0 +1,17 @@
+{
+  "code": "def remove_outlier(\n    data: pd.DataFrame,\n    outliers_config: TagsConfig[TagOutliersParameters],\n    rule: str = \"clip\",\n    tags: tp.Iterable[str] | None = None,\n) -> tuple[pd.DataFrame, pd.DataFrame]:\n    \"\"\"Remove outliers based on value range set in tagdict\n    and selected rule\n\n    Args:\n       data: input data\n       outliers_config: tags outliers config\n       rule: ways to remove outlier. either 'clip' or 'drop'\n       tags: list of tags to remove outliers\n       method: method to use for filling sensor range, default is None\n         - min-max: use min and max value of the data\n         - IQR: use interquartile range to calculate the whisker value\n         - 3-sigma: use 3-sigma rule to calculate the whisker value\n\n    Returns:\n        df_new, dropped_outliers\n\n        * df_new is the dataframe with dropped outliers\n        * dropped_outliers is the dataframe with the summary of dropped rows\n    \"\"\"\n\n    # get or calculate outlier range\n    tag_range = get_tag_range(outliers_config, tags)\n\n    df_new = apply_outlier_remove_rule(data.copy(), rule, tag_range)\n\n    summary_df = pd.DataFrame()\n\n    # Calculate summary based on the applied rule\n    if rule == \"drop\":\n        summary_df = get_drop_summary(data, df_new)\n    elif rule == \"clip\":\n        summary_df = get_clip_summary(data, tag_range)\n\n    return df_new, summary_df\n",
+  "filepath": "demo_model\\src\\preprocessing\\cleaning.py",
+  "parameters": {
+    "cleaning.outliers_rule": "drop"
+  },
+  "run_command": "kedro run --to-nodes=remove_outlier",
+  "inputs": [
+    "post_enforce_schema",
+    "tags_outliers_config",
+    "params:cleaning.outliers_rule"
+  ],
+  "outputs": [
+    "post_remove_outlier",
+    "outlier_summary"
+  ]
+}

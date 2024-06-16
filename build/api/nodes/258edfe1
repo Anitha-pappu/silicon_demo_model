@@ -1,0 +1,19 @@
+{
+  "code": "def create_splitter(\n    split_method: TSplitMethod,\n    splitting_parameters: tp.Dict[str, tp.Any],\n) -> SplitterBase:\n    \"\"\"\n    Create ``SplitterBase`` instance from split_method and splitting parameters.\n\n    Supported str options for ``split_method``:\n        * \"date\" to initialize ``ByDateSplitter``\n        * \"frac\" to initialize ``ByFracSplitter``\n        * \"intervals\" to initialize ``ByIntervalsSplitter``\n        * \"last_window\" to initialize ``ByLastWindowSplitter``\n        * \"sequential_window\" to initialize ``BySequentialSplitter``\n        * \"column_value\" to initialize ``ByColumnValueSplitter``\n\n    Args:\n        split_method: method for choosing type of inheritor of ModelBase to initialize\n        splitting_parameters: parameters used for splitter initialization.\n\n    Notes:\n        ``splitting_parameters`` would be different for each ``split_method``.\n        E.g. \"date\" as ``split_method`` requires ``datetime_column`` and\n        ``split_datetime``. Changing to \"frac\" method would require different\n        parameters related to train / test fractions. For details, refer to:\n            * ``SplitterBase`` tutorial in `modeling` documentation\n            * Constructor API of desired ``Splitter`` class.\n\n    Returns:\n        A splitter of defined method with supplied parameters\n    \"\"\"\n    if split_method not in SUPPORTED_SPLITTERS:\n        supported_splitting_methods = \", \".join(SUPPORTED_SPLITTERS.keys())\n        raise ValueError(\n            f\"Provided splitting method {split_method} is not supported:\"\n            f\" supported splitting methods are {supported_splitting_methods}\",\n        )\n    splitter_type = SUPPORTED_SPLITTERS[split_method]\n    return splitter_type(**splitting_parameters)\n",
+  "filepath": "optimus_set_point_optimization_kedro_app-0.21.0\\src\\modeling\\splitters\\_splitters\\functional.py",
+  "parameters": {
+    "silica_model.split.split_method": "date",
+    "silica_model.split.split_parameters": {
+      "datetime_column": "timestamp",
+      "split_datetime": "2017-08-30 23:00:00"
+    }
+  },
+  "run_command": "kedro run --to-nodes=silica_model.create_splitter",
+  "inputs": [
+    "params:silica_model.split.split_method",
+    "params:silica_model.split.split_parameters"
+  ],
+  "outputs": [
+    "silica_model.splitter"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "type": "pickle.pickle_dataset.PickleDataset",
+  "filepath": "C:/Users/Anitha Pappu/Box Sync/Anitha Space/Anitha_Work/7. LOP/SAIL Client/demo_model/data/06_models/sample_trained_model.pkl",
+  "run_command": "kedro run --to-outputs=trained_model",
+  "preview": null,
+  "preview_type": null,
+  "stats": null
+}

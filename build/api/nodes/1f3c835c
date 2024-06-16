@@ -1,0 +1,7 @@
+{
+  "parameters": {
+    "silicon_model.model_performance_report.report_meta_data": {
+      "title": "Silicon Model Performance Report"
+    }
+  }
+}

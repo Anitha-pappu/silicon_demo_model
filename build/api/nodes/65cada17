@@ -1,0 +1,13 @@
+{
+  "code": "def enforce_schema(\n    data: pd.DataFrame,\n    meta_config: TagsConfig[TagMetaParameters],\n    map_str_bool: tp.Optional[tp.Dict[str, bool]] = None,\n    schema_func_param: tp.Optional[tp.Dict[str, str]] = None,\n) -> pd.DataFrame:\n    \"\"\"Enforce schema based on data types defined for tags, including\n    \"numeric\", \"categorical\", \"boolean\". \"datetime\" columns are\n    handled in the node `set_timezones`\n\n    Args:\n        data: input data\n        meta_config: tags meta config\n        map_str_bool: optional dictionary of mapping for str to boolean values\n        schema_func_param: optional dictionary containing path\n            to any custom conversion function\n\n    Returns:\n       data\n    \"\"\"\n    data_types: dict[str, str | tp.Any] = {}\n    for col in data.columns:\n        if col in meta_config:\n            data_types[col] = meta_config[col].data_type\n\n    if schema_func_param:\n        data_type: str = schema_func_param.get(\"data_type\", \"\")\n        func: str = schema_func_param.get(\"func\", \"\")\n        schema_func = {\n            data_type: {\"func\": load_obj(func)},\n        }\n        data = enforce_custom_schema(data, data_types, map_str_bool, schema_func)\n    else:\n        data = enforce_custom_schema(data, data_types, map_str_bool, None)\n\n    return data\n",
+  "filepath": "demo_model\\src\\preprocessing\\cleaning.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes=enforce_schema",
+  "inputs": [
+    "post_deduplicate_pandas",
+    "tags_meta_config"
+  ],
+  "outputs": [
+    "post_enforce_schema"
+  ]
+}

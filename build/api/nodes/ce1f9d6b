@@ -1,0 +1,28 @@
+{
+  "code": "def prepare_predictions(\n    baseline_values: pd.DataFrame,\n    optimized_values: pd.DataFrame,\n    model_prediction_bounds: pd.DataFrame,\n    solutions: Solutions,\n    target_meta: MetaDataConfig[TargetMetaData],\n    target_name: str,\n    cols_export: dict[str, str],\n    iso_format: str = _DEFAULT_ISO_FORMAT,\n    timestamp_column: str = _DEFAULT_TIMESTAMP_COLUMN,\n) -> TJson:\n    \"\"\"Creates a list of predictions in the format of the ``predictions`` endpoint.\n\n    Args:\n        baseline_values: baseline values.\n        optimized_values: optimized values.\n        model_prediction_bounds: a dataframe with columns timestamp, actuals,\n        predictions, upper_bound, lower_bound\n        solutions: a mapping of optimization results.\n        target_meta: target meta information.\n        target_name: name of the target.\n        cols_export: columns to export for each dataframe. If consists of a dictionary\n            with keys 'baseline' and 'optimized' and values the column names to export\n            for the corresponding dataframe.\n        iso_format: format for timestamp.\n        timestamp_column: column name for timestamp.\n\n    Returns:\n        An input to 'predictions' endpoint of cra_api.\n\n    Raises:\n        ValueError: if keys of cols_export are not 'baseline', 'optimized' and\n        'predicted'.\n    \"\"\"\n    if not set(cols_export.keys()) == {\"baseline\", \"optimized\"}:\n        raise ValueError(\n            \"Dictionaries keys in cols_list should be 'baseline' and 'optimized', \"\n            f\"but got {cols_export.keys()}\",\n        )\n\n    run_ids = get_run_id(solutions, timestamp_column, iso_format)\n    target_id_mapping = get_id_mapping(target_meta)\n    baseline_values[timestamp_column] = get_timestamp_in_iso_format(\n        baseline_values[timestamp_column], iso_format,\n    )\n    optimized_values[timestamp_column] = get_timestamp_in_iso_format(\n        optimized_values[timestamp_column], iso_format,\n    )\n    model_prediction_bounds[timestamp_column] = get_timestamp_in_iso_format(\n        model_prediction_bounds[timestamp_column], iso_format,\n    )\n\n    predictions = []\n    for timestamp in run_ids.keys():\n        single_model_preds_bounds = model_prediction_bounds.loc[\n            model_prediction_bounds[timestamp_column] == timestamp,\n        ]\n        prediction: TSingleDict = {\n            \"id\": str(uuid.uuid4()),\n            \"run_id\": run_ids[timestamp],\n            \"target_id\": target_id_mapping[target_name],\n            \"baseline\": baseline_values.loc[\n                baseline_values[timestamp_column] == timestamp,\n                cols_export[\"baseline\"],\n            ].iloc[0],\n            \"optimized\": optimized_values.loc[\n                optimized_values[timestamp_column] == timestamp,\n                cols_export[\"optimized\"],\n            ].iloc[0],\n            \"predicted\": single_model_preds_bounds[\"predictions\"].iloc[0],\n            \"upper_bound\": single_model_preds_bounds[\"upper_bound\"].iloc[0],\n            \"lower_bound\": single_model_preds_bounds[\"lower_bound\"].iloc[0],\n        }\n        predictions.append(prediction)\n\n    return tp.cast(TJson, predictions)\n",
+  "filepath": "demo_model\\src\\recommend\\cra_export\\cra_export.py",
+  "parameters": {
+    "recommend.cra_export.target_col": "silica_conc",
+    "recommend.cra_export.cols_export": {
+      "baseline": "model_prediction",
+      "optimized": "value_after_recs"
+    },
+    "recommend.cra_export.timestamp_format": "%Y-%m-%d %H:%M:%S",
+    "recommend.cra_export.timestamp_column": "timestamp"
+  },
+  "run_command": null,
+  "inputs": [
+    "test_data_with_baseline_predictions",
+    "value_after_recs_opt",
+    "model_prediction_bounds",
+    "solutions",
+    "target_meta",
+    "params:recommend.cra_export.target_col",
+    "params:recommend.cra_export.cols_export",
+    "params:recommend.cra_export.timestamp_format",
+    "params:recommend.cra_export.timestamp_column"
+  ],
+  "outputs": [
+    "cra_predictions"
+  ]
+}

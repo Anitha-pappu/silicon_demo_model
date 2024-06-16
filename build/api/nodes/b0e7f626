@@ -1,0 +1,26 @@
+{
+  "code": "def get_impact_overview(\n    baseline_data: pd.DataFrame,\n    baseline_historical_data: pd.DataFrame,\n    optimized_uplift: pd.DataFrame,\n    actual_uplift: pd.DataFrame,\n    significance_mean_no_zero: pd.DataFrame,\n    significance_uplift_no_model_error: pd.DataFrame,\n    significance_baseline_mean_zero: pd.DataFrame,\n    impact: pd.DataFrame,\n    data_filtering: tp.Optional[pd.DataFrame] = None,\n    timestamp_column: str = \"timestamp\",\n    baseline_prediction_column: str = \"model_prediction\",\n    baseline_target_column: str = \"target\",\n) -> TRenderingAgnosticDict:\n    \"\"\"\n    Generates nested dict with figures for the impact reporting.\n\n    There are 4 main sections in this report:\n        1. Impact Summary\n        2. Data Filtering\n        3. Impact Deep Dive\n        4. Impact Significance\n\n\n    This report can be viewed in the notebook or used in report generation to produce\n    a standalone report file.\n\n    Args:\n        baseline_data: Dataframe with baseline data\n        baseline_historical_data: Dataframe with baseline predictions and actual values\n            over a historical dataset to assess its bias\n        optimized_uplift: Dataframe with uplifts for counterfactual analysis\n        actual_uplift: Dataframe with uplifts for impact analysis\n        significance_mean_no_zero: Dataframe with significance analysis that proves that\n            the mean uplift is not zero\n        significance_uplift_no_model_error: Dataframe with significance analysis that\n            proves that the uplift is not due to model error\n        significance_baseline_mean_zero: Dataframe with significance analysis that\n            proves that the baseline mean is zero\n        impact: Dataframe with impact analysis\n        data_filtering: Dataframe with acceptance ratio of recommendations and operators\n            adherence to them. If ``None``, this section will not be included in the\n            report\n        timestamp_column: Name of the timestamp column\n        baseline_prediction_column: Name of the column with baseline values\n        baseline_target_column: Name of the column in ``baseline_historical_data`` with\n            target values\n\n    Returns:\n        Dictionary of recommendations analysis figures\n\n    \"\"\"\n\n    data = _preprocess_data_to_report(\n        baseline_data,\n        optimized_uplift,\n        actual_uplift,\n        timestamp_column,\n        baseline_prediction_column,\n    )\n    baseline_historical_data = _get_baseline_error_to_report(\n        baseline_historical_data,\n        timestamp_column,\n        baseline_prediction_column,\n        baseline_target_column,\n    )\n\n    impact_overview: TRenderingAgnosticDict = {\n        \"Impact Summary\": charts.plot_impact_summary(data, impact),\n        \"Data Filtering\": _get_data_filtering_section(\n            data_filtering,\n        ),\n        \"Impact Deep Dive\": _get_impact_deep_dive_section(\n            data,\n            impact,\n            timestamp_column,\n        ),\n        \"Impact Significance\": _get_impact_significance_section(\n            data,\n            baseline_historical_data,\n            significance_mean_no_zero,\n            significance_uplift_no_model_error,\n            significance_baseline_mean_zero,\n        ),\n    }\n\n    if impact_overview[\"Data Filtering\"] is None:\n        impact_overview.pop(\"Data Filtering\", None)\n\n    return impact_overview\n",
+  "filepath": "optimus_set_point_optimization_kedro_app-0.21.0\\src\\recommend\\report\\_uplift_overview.py",
+  "parameters": {
+    "impact.datetime_col": "timestamp",
+    "impact.baseline_col": "model_prediction",
+    "impact.target_col": "silica_conc"
+  },
+  "run_command": "kedro run --to-nodes=get_impact_overview",
+  "inputs": [
+    "test_data_with_predictions",
+    "baseline_test_data_with_baseline_predictions",
+    "optimization_uplifts_data",
+    "uplifts_data",
+    "sig_uplift",
+    "sig_uplift_no_model_error",
+    "sig_baseline_error",
+    "impact",
+    "params:impact.datetime_col",
+    "params:impact.baseline_col",
+    "params:impact.target_col"
+  ],
+  "outputs": [
+    "impact_report"
+  ]
+}

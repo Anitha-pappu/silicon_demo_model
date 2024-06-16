@@ -1,0 +1,21 @@
+{
+  "code": "def cross_validate(\n    model: TCrossValidatableModel,\n    data: pd.DataFrame,\n    cv_strategy_config: tp.Optional[TCVStrategyConfig] = None,\n    decimals: tp.Optional[int] = 2,\n    return_splits: bool = False,\n    **predict_kwargs: tp.Any,\n) -> pd.DataFrame | tp.Tuple[pd.DataFrame, TCVDataSplits]:\n    \"\"\"\n    Cross-validate a model on a given data using a given config for CV strategy.\n\n    Args:\n        model: To cross-validate.\n        data: To cross-validate on.\n        cv_strategy_config: To parse sklearn-compatible strategy from. Can be:\n            - ``None``\n            - Positive ``int``\n            - Config of an instance of sklearn.model_selection.BaseCrossValidator, e.g.:\n                {\n                    \"class\": \"sklearn.model_selection.ShuffleSplit\",\n                    \"kwargs\": {\n                        \"n_splits\": 10,\n                    },\n                }\n        decimals: To round output to.\n        return_splits: Whether to return data corresponding to CV splits or not.\n        **predict_kwargs: To be additionally supplied to model.evaluate_metrics().\n\n    Returns:\n        A dataframe with cross-validation metrics for each fold,\n        rounded to 2 decimals by default or whatever specified by user.\n    \"\"\"\n\n    cross_validator = _build_cross_validator(cv_strategy_config)\n    cv_results = _produce_cv_results_container(\n        model=model,\n        data=data,\n        cross_validator=cross_validator,\n        **predict_kwargs,\n    )\n    scores_df = cv_results.get_scores_dataframe()\n    if decimals:\n        scores_df = scores_df.round(decimals)\n\n    if return_splits:\n        splits = cv_results.get_data_splits()\n        return scores_df, splits\n\n    return scores_df\n",
+  "filepath": "demo_model\\src\\modeling\\models\\_cross_validation.py",
+  "parameters": {
+    "silicon_model.cross_validate.cv_strategy_config": {
+      "class_name": "sklearn.model_selection.TimeSeriesSplit",
+      "kwargs": {
+        "n_splits": 4
+      }
+    }
+  },
+  "run_command": "kedro run --to-nodes=silicon_model.cross_validate",
+  "inputs": [
+    "trained_model",
+    "silicon_model.data_dropna",
+    "params:silicon_model.cross_validate.cv_strategy_config"
+  ],
+  "outputs": [
+    "cross_validation_scores"
+  ]
+}

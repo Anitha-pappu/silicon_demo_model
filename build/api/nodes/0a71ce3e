@@ -1,0 +1,8 @@
+{
+  "parameters": {
+    "silicon_model.split.split_parameters": {
+      "datetime_column": "timestamp",
+      "split_datetime": "2019-03-27 23:00:00"
+    }
+  }
+}

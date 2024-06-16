@@ -1,0 +1,47 @@
+{
+  "code": "def create_model_factory(\n    model_factory_type: tp.Union[str, tp.Type[TModelFactory]],\n    model_init_config: tp.Dict[str, tp.Any],\n    features: tp.List[str],\n    target: str,\n) -> TModelFactory:\n    \"\"\"\n    Create ``ModelFactoryBase`` instance from type and model initialization config.\n    This function is mostly needed for pipelining.\n\n    Each ``model_factory_type`` requires special structure\n    for ``model_init_config`` dict,\n    see corresponding Builders for more details.\n\n    Args:\n        model_factory_type: ``ModelFactoryBase`` type\n         that has ``.create`` method that created ModelBase instance.\n        model_init_config: Dict with parameters\n         required for ``ModelFactoryBase`` initialization.\n        features: List of features used in the model as ``features_in``\n        target: Column name to be used as a target in model\n\n    Returns:\n        Instance of a ``ModelBase`` inheritor class specified by ``model_type``\n    \"\"\"\n    if isinstance(model_factory_type, str):\n        model_factory: tp.Type[TModelFactory] = utils.load_obj(model_factory_type)\n    else:\n        model_factory = model_factory_type\n    return model_factory(model_init_config, features, target)\n",
+  "filepath": "optimus_set_point_optimization_kedro_app-0.21.0\\src\\modeling\\models\\functional\\create_model.py",
+  "parameters": {
+    "silica_model.train.factory_class_name": "modeling.SklearnPipelineFactory",
+    "silica_model.train.init": {
+      "estimator": {
+        "class_name": "sklearn.linear_model.SGDRegressor",
+        "kwargs": {
+          "random_state": 123,
+          "penalty": "elasticnet"
+        }
+      },
+      "transformers": [
+        {
+          "class_name": "sklearn.preprocessing.StandardScaler",
+          "kwargs": {},
+          "name": "standard_scaler",
+          "wrapper": "preserve_columns"
+        }
+      ]
+    },
+    "silica_model.train.model_features": [
+      "iron_feed",
+      "silica_feed",
+      "starch_flow",
+      "amina_flow",
+      "ore_pulp_flow",
+      "ore_pulp_ph",
+      "ore_pulp_density",
+      "total_air_flow",
+      "total_column_level",
+      "feed_diff_divide_silica"
+    ],
+    "silica_model.train.target_column": "silica_conc"
+  },
+  "run_command": null,
+  "inputs": [
+    "params:silica_model.train.factory_class_name",
+    "params:silica_model.train.init",
+    "params:silica_model.train.model_features",
+    "params:silica_model.train.target_column"
+  ],
+  "outputs": [
+    "silica_model.model_factory"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "parameters": {
+    "cleaning.interpolate_kwargs": {
+      "limit": 5
+    }
+  }
+}

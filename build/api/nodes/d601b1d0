@@ -1,0 +1,13 @@
+{
+  "code": "def calculate_feature_importance(\n    data: pd.DataFrame, model: ModelBase, **kwargs: tp.Any,\n) -> pd.DataFrame:\n    \"\"\"Extract feature importances from instance of ``ModelBase``\n\n    Args:\n        data: data to be passed into ``ModelBase.calculate_feature_importance``.\n        model: a trained instance of ``ModelBase``\n         in ``pd.DataFrame`` based on it's importance\n        kwargs: kwargs to be passed into model's ``get_feature_importance_method``\n\n    Returns:\n        DataFrame of feature importance with feature names as the index.\n    \"\"\"\n    feature_importance = model.get_feature_importance(data, **kwargs)\n    return (\n        pd.DataFrame(\n            data={FEATURE_IMPORTANCE_COLUMN_NAME: feature_importance.values()},\n            index=pd.Index(feature_importance.keys(), name=FEATURES_NAME_COLUMN),\n        )\n        .sort_values(by=FEATURE_IMPORTANCE_COLUMN_NAME, ascending=False)\n    )\n",
+  "filepath": "optimus_set_point_optimization_kedro_app-0.21.0\\src\\modeling\\models\\functional\\calculate_feature_importance.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes=baseline_model.feature_importance",
+  "inputs": [
+    "baseline_train_data",
+    "baseline_trained_model"
+  ],
+  "outputs": [
+    "baseline_feature_importance"
+  ]
+}

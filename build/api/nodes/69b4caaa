@@ -1,0 +1,5 @@
+{
+  "parameters": {
+    "baseline_model.tune.class_name": "modeling.SklearnPipelineTuner"
+  }
+}

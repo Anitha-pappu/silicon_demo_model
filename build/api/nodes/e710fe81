@@ -1,0 +1,17 @@
+{
+  "code": "                lambda data, datetime_column, baseline_column: (\n                    data[[datetime_column, baseline_column]]\n                ),\n",
+  "filepath": "optimus_set_point_optimization_kedro_app-0.21.0\\src\\set_point_optimization_kedro\\pipelines\\impact.py",
+  "parameters": {
+    "impact.datetime_col": "timestamp",
+    "impact.baseline_col": "model_prediction"
+  },
+  "run_command": "kedro run --to-nodes=baseline_test_data_only_predictions",
+  "inputs": [
+    "baseline_test_data_with_baseline_predictions",
+    "params:impact.datetime_col",
+    "params:impact.baseline_col"
+  ],
+  "outputs": [
+    "baseline_test_data_only_predictions"
+  ]
+}

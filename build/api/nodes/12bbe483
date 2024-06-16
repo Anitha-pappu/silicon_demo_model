@@ -1,0 +1,14 @@
+{
+  "code": "def set_off_equipment_to_zero(\n    data: pd.DataFrame,\n    meta_config: TagsConfig[TagMetaParameters],\n    on_off_dep_config: TagsConfig[TagOnOffDependencyParameters],\n) -> pd.DataFrame:\n    \"\"\"\n    Mark sensor tags to zero based on the on/off tag dependencies defined\n    in the Tag Dictionary.\n\n    Args:\n        data: input data\n        meta_config: TagsConfig object with TagMetaParameters\n        on_off_dep_config: TagsConfig object with TagOnOffDependencyParameters\n    \"\"\"\n    if not isinstance(data, pd.DataFrame):\n        raise TypeError(f\"data should be a Pandas dataframe, got {type(data)}\")\n\n    tags = set(data.columns)\n\n    # Extract on_off tags from tags_meta_config\n    on_off_tags = {\n        tag_param.tag_name\n        for tag_param in meta_config.values()\n        if tag_param.tag_type == \"on_off\" and tag_param.tag_name in tags\n    }\n    if not on_off_tags:\n        logger.warning(\n            \"There are no on/off tags defined in Tag Dictionary \"\n            \"which match any of the columns in the supplied dataframe\",\n        )\n        return data.copy()\n\n    # Build a graph of tag dependencies\n    tags_dependents = build_dependents_graph(on_off_dep_config)\n\n    tag_to_dependents = {\n        on_off_tag: set(_bfs(on_off_tag, tags_dependents)) & set(tags)\n        for on_off_tag in on_off_tags\n    }\n\n    data = data.copy()\n\n    # in cases where on-off tags have missing values, we impute with\n    # the last known value. To change this behavior, consider implementing\n    # custom logic here or earlier in the pipeline.\n    data[list(on_off_tags)] = data[list(on_off_tags)].fillna(method=\"ffill\")\n\n    for on_off_tag, dependents in tag_to_dependents.items():\n        if not dependents:\n            continue\n\n        # set tags to 0 when on/off tag is off. Change rule here as required.\n        # For example could set to None or np.NaN instead.\n        logger.info(\n            f\"Setting '{dependents}' to zero when '{on_off_tag}' is off.\",\n        )\n        data.loc[data[on_off_tag] == 0, list(dependents)] = 0\n\n    return data\n",
+  "filepath": "demo_model\\src\\preprocessing\\on_off_logic.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes=set_off_equipment_to_zero",
+  "inputs": [
+    "post_interpolate_cols",
+    "tags_meta_config",
+    "tags_on_off_config"
+  ],
+  "outputs": [
+    "post_set_off_equipment_to_zero"
+  ]
+}

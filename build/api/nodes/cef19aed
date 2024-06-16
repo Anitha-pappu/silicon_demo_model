@@ -1,0 +1,18 @@
+{
+  "parameters": {
+    "impact.group_characteristics": {
+      "low_silica": {
+        "silica_conc": {
+          "lower_value": 0.0,
+          "upper_value": 3.0
+        }
+      },
+      "high_silica": {
+        "silica_conc": {
+          "lower_value": 3.0,
+          "upper_value": 50.0
+        }
+      }
+    }
+  }
+}

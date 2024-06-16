@@ -1,0 +1,19 @@
+{
+  "code": "def preprocessing_output_summary(\n    tags_raw_config: TagsConfig[TTagParameters],\n    tags_meta_config: TagsConfig[TTagParameters],\n    tags_outliers_config: TagsConfig[TTagParameters],\n    tags_impute_config: TagsConfig[TTagParameters],\n    tags_on_off_config: TagsConfig[TTagParameters],\n    tags_resample_config: TagsConfig[TTagParameters],\n    outlier_summary: pd.DataFrame = None,\n    interpolate_summary: pd.DataFrame = None,\n    tag_name_col: str = \"tag_name\",\n) -> pd.DataFrame:\n    \"\"\"Create a descriptive summary table for input data by joining preprocessing\n    datasets and TagsConfig dataframes by tag_name.\n\n    Args:\n        tags_raw_config: TagsConfig object containing the raw tag information.\n        tags_meta_config: TagsConfig object containing the tag meta information.\n        tags_outliers_config: TagsConfig object containing the tag outliers parameters.\n        tags_impute_config: TagsConfig object containing the tag impute parameters.\n        tags_on_off_config: TagsConfig object containing the tag on/off parameters.\n        tags_resample_config: TagsConfig object containing the tag resample parameters.\n        outlier_summary: Summary table of outliers handling for each tag.\n        interpolate_summary: Summary table of interpolated values for each tag.\n        tag_name_col (str, optional): column to join datasets. Defaults to \"tag_name\".\n\n    Returns:\n        pd.DataFrame: Preprocessing summary table.\n    \"\"\"\n\n    config_list = [\n        tags_raw_config,\n        tags_meta_config,\n        tags_outliers_config,\n        tags_impute_config,\n        tags_on_off_config,\n        tags_resample_config,\n    ]\n\n    config_list = [config for config in config_list if config is not None]\n    config_dfs = [config.to_df() for config in config_list]\n\n    summary_list = [outlier_summary, interpolate_summary]\n    summary_datasets = [summary for summary in summary_list if summary is not None]\n\n    if not config_dfs and not summary_datasets:\n        raise ValueError(\"Both configs and summary datasets must not be empty\")\n\n    datasets = config_dfs + summary_datasets\n\n    # Ensure the join column exists on all DataFrames and is of type str\n    datasets = [\n        df.assign(**{tag_name_col: df[tag_name_col].astype(str)})\n        for df in datasets if tag_name_col in df.columns\n    ]\n\n    resulting_df = datasets[0]\n\n    for df in datasets[1:]:\n        resulting_df = resulting_df.merge(\n            df,\n            on=tag_name_col,\n            how=\"left\",\n            suffixes=('', '_drop'),\n        )\n\n        # Drop columns that are produced from the join with suffix \"_drop\"\n        drop_columns = [col for col in resulting_df.columns if col.endswith('_drop')]\n        resulting_df.drop(columns=drop_columns, axis=1, inplace=True)\n\n    return resulting_df\n",
+  "filepath": "demo_model\\src\\preprocessing\\utils.py",
+  "parameters": {},
+  "run_command": "kedro run --to-nodes=preprocessing_summary",
+  "inputs": [
+    "tags_raw_config",
+    "tags_meta_config",
+    "tags_outliers_config",
+    "tags_impute_config",
+    "tags_on_off_config",
+    "tags_resample_config",
+    "outlier_summary",
+    "interpolate_summary"
+  ],
+  "outputs": [
+    "tag_config_summary"
+  ]
+}

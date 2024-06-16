@@ -1,0 +1,112 @@
+{
+  "type": "pandas.excel_dataset.ExcelDataset",
+  "filepath": "C:/Users/Anitha Pappu/Box Sync/Anitha Space/Anitha_Work/7. LOP/SAIL Client/demo_model/data/08_reporting/cross_validation_scores.xlsx",
+  "run_command": "kedro run --to-outputs=cross_validation_scores",
+  "preview": {
+    "index": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "columns": [
+      "Unnamed: 0",
+      "mae",
+      "Unnamed: 2",
+      "mape",
+      "Unnamed: 4",
+      "mse",
+      "Unnamed: 6",
+      "r_squared",
+      "Unnamed: 8",
+      "rmse",
+      "Unnamed: 10",
+      "var_score",
+      "Unnamed: 12"
+    ],
+    "data": [
+      [
+        null,
+        "train",
+        "test",
+        "train",
+        "test",
+        "train",
+        "test",
+        "train",
+        "test",
+        "train",
+        "test",
+        "train",
+        "test"
+      ],
+      [
+        "Fold",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        0,
+        0.11,
+        0.04,
+        0.14,
+        0.06,
+        0.01,
+        0,
+        -10.1,
+        -0.6,
+        0.11,
+        0.05,
+        0.51,
+        -0.5
+      ],
+      [
+        1,
+        0.06,
+        0.03,
+        0.08,
+        0.05,
+        0,
+        0,
+        -0.4,
+        -1.94,
+        0.07,
+        0.04,
+        0.71,
+        -0.23
+      ],
+      [
+        2,
+        0.05,
+        0.03,
+        0.06,
+        0.04,
+        0,
+        0,
+        0.22,
+        -1.57,
+        0.05,
+        0.03,
+        0.74,
+        -0.76
+      ]
+    ]
+  },
+  "preview_type": "TablePreview",
+  "stats": {
+    "rows": 4,
+    "columns": 12,
+    "file_size": 5384
+  }
+}
